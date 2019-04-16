@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OPERADOR</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body id="bodyOperadorS">
+        <div id="reporte">
+            <input type="text" id="txtEstado" placeholder="STATUS" />
+            <input type="text" id="txtDuda" placeholder="¿QUE REPORTO EL USUARIO?" />
+            <input type="text" id="txtIdUsuario" placeholder="¿QUIEN LO MANDA?" />
+            <input type="text" id="txtRespuesta" placeholder="¿COMO SE SOLUCIONO?" />
+            <input type="text" id="txtEncargado" placeholder="¿QUIEN LO RESOLVIO?" />
+            <input type="text" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" />
+            <input type="button" id="btnGuardaReporte" value="GUARDA RESPORTE"/>
+        </div>
+        
+        <div id="contenedorDudas"></div>
+        
+        
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+        <!-- *********  -->
+        
+        
+        <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="../js/generall.js"></script>
+        <script type="text/javascript" src="../js/soporte/soportee.js"></script>
+        <script type="text/javascript" src="../js/soporte/soporteControl.js"></script>
+        
+        
+    </body>
+</html>

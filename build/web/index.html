@@ -4,94 +4,16 @@
         <title>KEP</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     </head>
     <body>
-        <input type="text" id="txtUsuario" placeholder="Usuario"/>
+        <!--<input type="text" id="txtUsuario" placeholder="Usuario"/>
         <input type="text" id="txtContra" placeholder="Contraseña"/>
         <input type="button" id="btnLogin" value="Inicia Sesion"/>
-        <hr>
+        <hr>-->
         <input type="text" id="correo" placeholder="correo"/>
         <input type="text" id="contra" placeholder="contraseña"/>
-        <input type="button" id="btnRegistra" value="Registrarme"/>
         <input type="button" id="btnIniciaSesion" value="Iniciar Sesion"/>
         <input type="button" id="btnCierraSesion" value="Cerrar Sesion"/>
-        <hr>
-        <input type="button" id="btnTraeBuzon" value="Traer el Buzon"/>
-        
-        <script>
-            var btnLogin = document.getElementById("btnLogin");
-            btnLogin.addEventListener("click", function(){
-                var txtUsuario = document.getElementById("txtUsuario");
-                var txtContra = document.getElementById("txtContra");
-                console.log(txtUsuario.value);
-                if(txtContra.value === "" || txtUsuario.value === ""){
-                    alert("Tienes un campo vacio");
-                }else
-                    if(txtUsuario.value === "clasificador" && txtContra.value === "123456"){
-                        alert("Bienvenido Clasificador");
-                        //Intent intent = new Intent(this, ClasificarActivity.class);
-                        //startActivity(intent);
-                    }else
-                        if(txtUsuario.value === "operador" && txtContra.value === "123456"){
-                            alert("Bienvenido Operador");
-                            //Intent intent = new Intent(this, SoporteActivity.class);
-                            //intent.putExtra("tipoUsuario", "operador");
-                            //startActivity(intent);
-                        }else
-                            if(txtUsuario.value === "ingeSoporte" && txtContra.value === "123456"){
-                                alert("Bienvenido Ingeniero de Soporte");
-                                //Intent intent = new Intent(this, SoporteActivity.class);
-                                //intent.putExtra("tipoUsuario", "ingeSoporte");
-                                //startActivity(intent);
-                            }else
-                                if(txtUsuario.value === "gerenteSoporte" && txtContra.value === "123456"){
-                                    alert("Bienvenido Gerente de Soporte");
-                                    //Intent intent = new Intent(this, SoporteActivity.class);
-                                    //intent.putExtra("tipoUsuario", "gerenteSoporte");
-                                    //startActivity(intent);
-                                }else
-                                    if(txtUsuario.value === "aylin" && txtContra.value === "123456"){
-                                        alert("Bienvenido Programador");
-                                        //Intent intent = new Intent(this, ProgramadorActivity.class);
-                                        //intent.putExtra("tipoUsuario", "Aylin");
-                                        //startActivity(intent);
-                                    }else
-                                        if(txtUsuario.value === "gerenteMantenimiento" && txtContra.value === "123456"){
-                                            alert("Bienvenido Gerente de Mantenimiento");
-                                            //Intent intent = new Intent(this, MantenimientoActivity.class);
-                                            //intent.putExtra("tipoUsuario", "gerenteMantenimiento");
-                                            //startActivity(intent);
-                                        }else
-                                            if(txtUsuario.value === "asesor" && txtContra.value === "123456"){
-                                                alert("Bienvenido Asesor");
-                                                //Intent intent = new Intent(this, AsesoriaActivity.class);
-                                                //startActivity(intent);
-                                            }else
-                                                if(txtUsuario.value === "editor" && txtContra.value === "123456"){
-                                                    alert("Bienvenido Editor");
-                                                    window.location.href = "html/Editor.html";
-                                                }else
-                                                    if(txtUsuario.value === "carolina" && txtContra.value === "123456"){
-                                                        alert("Bienvenido Programador");
-                                                        //Intent intent = new Intent(this, ProgramadorActivity.class);
-                                                        //intent.putExtra("tipoUsuario", "Caro");
-                                                        //startActivity(intent);
-                                                    }else
-                                                        if(txtUsuario.value === "lucia" && txtContra.value === "123456"){
-                                                            alert("Bienvenido Programador");
-                                                            //Intent intent = new Intent(this, ProgramadorActivity.class);
-                                                            //intent.putExtra("tipoUsuario", "Lucia");
-                                                            //startActivity(intent);
-                                                        }else
-                                                            alert("Usuario no Reconocido");
-                
-                
-            });
-        </script>
-        
-        
-        
         
         <!--  FIREBASE  -->
             <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
@@ -102,11 +24,10 @@
         <!-- *********  -->
         
         <script type="text/javascript" src="js/config/ConfigFirebase.js"></script>
-        <script type="text/javascript" src="js/general.js"></script>
-        <script type="text/javascript" src="js/auth/autenticacion.js"></script>
-        <script type="text/javascript" src="js/auth/authController.js"></script>
-        <script src="js/persona/persona.js" type="text/javascript"></script>
-        <script src="js/persona/personaController.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/generall.js"></script>
+        <script type="text/javascript" src="js/rol.js"></script>
+        <script type="text/javascript" src="js/auth/autentication.js"></script>
+        <script type="text/javascript" src="js/auth/authControl.js"></script>
         
     </body>
    

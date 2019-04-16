@@ -5,7 +5,6 @@ btnFaqs.addEventListener("click", function(){
     var faq = new Faq();
     var arrayFaq = [];
     arrayFaq = faq.traePreguntas();
-    console.log(arrayFaq);
 });
 
 btnGuardaFaq.addEventListener("click", function(){

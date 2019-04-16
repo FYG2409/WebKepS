@@ -6,7 +6,7 @@
     
   
 //OBSERVADOR DEL CAMBIO DE EN LA SESION
-/*
+
 firebase.auth().onAuthStateChanged(user =>{
     if(user){
         //El usuario esta autentificado
@@ -15,4 +15,14 @@ firebase.auth().onAuthStateChanged(user =>{
         //El usuario no esta autentificado
         alert("Usuario no autentificado");
 });
-*/
+
+function traeCurrentUser(){
+    firebase.auth().onAuthStateChanged(user =>{
+        if(user){
+            //El usuario esta autentificadozz
+            return(user.email);
+        }else
+            //El usuario no esta autentificado
+            alert("Usuario no reconocido");
+    });
+}

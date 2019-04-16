@@ -11,12 +11,14 @@
             <input type="text" id="txtnuevaRespuesta" placeholder="Escribe aquí la nueva respuesta">
             <input type="button" id="btnGuardaFaq" value="GUARDA FAQ"/>
         </div>
+        
         <div>
             <input type="button" id="btnFaqs" value="FAQS"/>
             <input type="button" id="btnRegPregunta" value="REGISTRA PREGUNTA"/>
             <input type="button" id="btnRegCarrera" value="REGISTRA CARRERA"/>
             <input type="button" id="btnVeExpediente" value="REGISTRA EXPEDIENTE"/>
         </div>
+        
         <div id="contenedorFaqs"></div>
         
         <script type="text/javascript">
@@ -43,13 +45,15 @@
         
         <!--  FIREBASE  -->
             <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
             <!-- Para database -->
             <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
         <!-- *********  -->
         
         
         <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
-        <script type="text/javascript" src="../js/general.js"></script>
+        <script type="text/javascript" src="../js/generall.js"></script>
         <script src="../js/faq/faq.js" type="text/javascript"></script>
         <script src="../js/faq/faqControl.js" type="text/javascript"></script>
     </body>
