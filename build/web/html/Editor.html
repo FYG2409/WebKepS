@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EDITOR</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div id="agregar">
+            <input type="text" id="txtnuevaPregunta" placeholder="Escribe aquí la nueva pregunta">
+            <input type="text" id="txtnuevaRespuesta" placeholder="Escribe aquí la nueva respuesta">
+            <input type="button" id="btnGuardaFaq" value="GUARDA FAQ"/>
+        </div>
+        <div>
+            <input type="button" id="btnFaqs" value="FAQS"/>
+            <input type="button" id="btnRegPregunta" value="REGISTRA PREGUNTA"/>
+            <input type="button" id="btnRegCarrera" value="REGISTRA CARRERA"/>
+            <input type="button" id="btnVeExpediente" value="REGISTRA EXPEDIENTE"/>
+        </div>
+        <div id="contenedorFaqs"></div>
+        
+        <script type="text/javascript">
+            var btnRegPregunta = document.getElementById("btnRegPregunta");
+            var btnRegCarrera = document.getElementById("btnRegCarrera");
+            var btnVeExpediente = document.getElementById("btnVeExpediente");
+            
+            btnRegPregunta.addEventListener("click", function(){
+                alert("clickeaste Registra Pregunta");
+            });
+            
+            btnRegCarrera.addEventListener("click", function(){
+                alert("clickeaste Registra Carrera");
+            });
+            
+            btnVeExpediente.addEventListener("click", function(){
+                alert("clickeaste Ver Expediente");
+            });
+        </script>
+        
+        
+        
+        
+        
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+        <!-- *********  -->
+        
+        
+        <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="../js/general.js"></script>
+        <script src="../js/faq/faq.js" type="text/javascript"></script>
+        <script src="../js/faq/faqControl.js" type="text/javascript"></script>
+    </body>
+</html>
