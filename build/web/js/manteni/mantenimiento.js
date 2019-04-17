@@ -1,222 +1,77 @@
 class Mantenimiento{
     
-    imprimeDudas(array, usr, est){
-        console.log(array);
-        var arrayDuda = [];
-        arrayDuda = array;
-        var totalRegistros = arrayDuda.length;
-        var noSumar;
-        if(totalRegistros === 1 || totalRegistros === 0){
-            noSumar = 0;
-        }else{
-            noSumar = 130/(totalRegistros-1);
-        }
-        var bande = 12;
+    guardaReporte(){
         
-        //TRAYENDO CAMPOS
-        var txtEstado = document.getElementById("txtEstado");
-        var txtDuda = document.getElementById("txtDuda");
-        var txtIdUsuario = document.getElementById("txtIdUsuario");
-        var txtRespuesta = document.getElementById("txtRespuesta");
-        var txtEncargado = document.getElementById("txtEncargado");
-        var btnGuardaReporte = document.getElementById("btnGuardaReporte");
-       
-        for(let i = 0; i<arrayDuda.length; i++){
-            //aquí
-            var divDuda = document.createElement("div");
-            var txtReporte = document.getElementById("txtReporte");
-            
-            
-            //-------------DISEÑO-------------
-                divDuda.style.border = "rgb("+bande+",144,12) 3px solid";
-                divDuda.style.backgroundColor = "rgba("+bande+",144,12,0.66)";
-                
-                bande = bande + noSumar;
-            //--------------------------------
-            
-            var conteFaqs = document.getElementById("contenedorDudas");
-            conteFaqs.appendChild(divDuda);
-            
-            if(arrayDuda[i].estado === "Asignado" && arrayDuda[i].usuarioAsignado === usr){
-                divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
-                
-                var txtSolucion = document.createElement("input");
-                var btnGSolucion = document.createElement("input");
-                txtSolucion.type="text";
-                btnGSolucion.type="button";
-                txtSolucion.placeholder = "Escribe aqui como solucionaste el problema";
-                btnGSolucion.value="GUARDA CAMBIOS";
-                txtSolucion.id = "div"+i;
-                
-                
-                btnGSolucion.addEventListener("click", function(){
-                    let soporte = new Soporte();
-                    soporte.modificaSolucion(arrayDuda[i].id,i,usr);
-                    console.log("mi usuario es: "+usr);
+        var txtReporte = document.getElementById("txtReporte");
+        
+        firebase.auth().onAuthStateChanged(user =>{
+            if(user){
+                firebase.database().ref("Buzon/").once('value', function(snapshot) {
+                    var xId = snapshot.numChildren() + 1; 
+                    console.log("index: " +xId);
+                    firebase.database().ref("Buzon/"+xId).set({
+                        estado: "Abierto",
+                        idUsuario: user.email,                    
+                        etiqueta: "Mantenimiento",
+                        reporte: txtReporte.value
+                    });
                 });
-                
-                
-                conteFaqs.insertBefore(txtSolucion, divDuda.nextSibling);
-                conteFaqs.insertBefore(btnGSolucion, txtSolucion.nextSibling);
             }else
-                if(arrayDuda[i].estado === "Solucionado" && "Gerente de Soporte" === usr){
-                    console.log("FEIK");
-                    divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
-                    var btnAcepta = document.createElement("input");
-                    var btnRechaza = document.createElement("input");
-                    btnAcepta.type="button";
-                    btnRechaza.type="button";
-                    btnAcepta.value="ACEPTAR"
-                    btnRechaza.value="RECHAZAR"
-                    
-                    btnAcepta.addEventListener("click", function(){
-                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Cerrado");
-                    });
-                    
-                    btnRechaza.addEventListener("click", function(){
-                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
-                    });
-                    conteFaqs.insertBefore(btnAcepta, divDuda.nextSibling);
-                    conteFaqs.insertBefore(btnRechaza, divDuda.nextSibling);
-                }else
-                    if(usr === "operador"){
-                        divDuda.innerHTML = "<p>"+arrayDuda[i].duda+"</p>";
-                        
-                        //-----EVENTO ON CLICK A DIV-----
-                            divDuda.addEventListener("click", function(){
-                                txtEstado.disabled = true;
-                                txtDuda.value = arrayDuda[i].duda;
-                                txtDuda.disabled = true;
-                                txtIdUsuario.value = arrayDuda[i].idUsuario;
-                                txtIdUsuario.disabled = true;
-                                txtRespuesta.disabled = true;
-                                txtEncargado.disabled = true;
-
-                                btnGuardaReporte.onclick = function(){
-                                let soporte = new Soporte();
-                                soporte.modificaReporte(arrayDuda[i].id,txtReporte.value, "Soporte");
-                                };
-                            });
-
-                        //-------------------------------
-                    }else
-                        if(arrayDuda[i].usuarioAsignado === undefined){
-                            divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
-                            
-                            var btnProgUno = document.createElement("input");
-                            var btnProgDos = document.createElement("input");
-                            var btnProgTres = document.createElement("input");
-                            var btnYo = document.createElement("input");
-                            btnProgUno.type = "button";
-                            btnProgDos.type = "button";
-                            btnProgTres.type = "button";
-                            btnYo.type = "button";
-                            
-                            if(usr === "Gerente de Soporte"){
-                                btnProgUno.value = "Aylin";
-                                btnProgDos.value = "Carolina";
-                                btnProgTres.value = "Lucia";
-                                btnYo.value = "YO";
-                                //-----EVENTO ON CLICK A DIV-----
-                                btnProgUno.addEventListener("click", function(){
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("aylin@kep.com");
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
-                                });
-                                btnProgDos.addEventListener("click", function(){
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("carolina@kep.com");
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
-                                });
-                                btnProgTres.addEventListener("click", function(){
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("lucia@kep.com");
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
-                                });
-                                btnYo.addEventListener("click", function(){
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("gerente_soporte@kep.com");
-                                    firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
-                                });
-                            //-------------------------------
-                            }else
-                                if(usr === "Gerente de Mantenimiento"){
-                                    btnProgUno.value = "Consuelo";
-                                    btnProgDos.value = "Daniel";
-                                    btnProgTres.value = "Zenely";
-                                    btnYo.value = "YO";
-                                    //-----EVENTO ON CLICK A DIV-----
-                                    btnProgUno.addEventListener("click", function(){
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("consuelo@kep.com");
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento");
-                                    });
-                                    btnProgDos.addEventListener("click", function(){
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("daniel@kep.com");
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento");
-                                    });
-                                    btnProgTres.addEventListener("click", function(){
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("zenely@kep.com");
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento");
-                                    });
-                                    btnYo.addEventListener("click", function(){
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("gerente_mantenimiento@kep.com");
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento");
-                                    });
-                                //-------------------------------
-                                }
-                            
-
-                            conteFaqs.appendChild(btnProgUno);
-                            conteFaqs.appendChild(btnProgDos);
-                            conteFaqs.appendChild(btnProgTres);
-                            conteFaqs.appendChild(btnYo);
-                        }
-
-
-                }
-            
-   }
+                alert("Usuario no reconocido");
+        });
+        
+    }
     
+    traeMisReportes(){
+        firebase.auth().onAuthStateChanged(user =>{
+            if(user){
+                var mantenimiento = new Mantenimiento();
+                mantenimiento.traeDudas(user.email, "Asignado"); 
+            }else
+                alert("Usuario no reconocido");
+        });
+    }
     
     traeDudas(usr, estado){
-        console.log("Usuario: "+usr);
-        let soporte = new Soporte();
-        console.log("entre: "+usr+" Estado: "+estado);
+        
+        console.log("traeDudas: "+" usuario: " +usr+" estado: "+estado);
+        
+        let mantenimiento = new Mantenimiento();
         var arrayDudas = [];
+        
         firebase.database().ref("Buzon").on("value", function(querySnapshot) {
-          soporte.limpiar();
+            
+          mantenimiento.limpiar();
           arrayDudas = [];
+          
           querySnapshot.forEach((duda) =>{
+              
                 var newDuda = duda.val();
+                
                 var dudaObj = {
                     id: duda.key,
-                    duda: newDuda.duda,
                     reporte: newDuda.reporte,
                     idUsuario: newDuda.idUsuario,
                     usuarioAsignado: newDuda.usuarioAsignado,
                     estado: newDuda.estado,
                     etiqueta: newDuda.etiqueta
                   };
-                  if(!(dudaObj.estado === "Cerrado")){
-                      if(dudaObj.etiqueta === "Soporte" && !(dudaObj.reporte === undefined)){
-                            if(dudaObj.estado === estado && dudaObj.usuarioAsignado === usr){
+                  
+                    if(dudaObj.etiqueta === "Mantenimiento" && !(dudaObj.reporte === undefined)){
+                        //los de mantenimiento (gerente y programador) reciben las dudas con un reporte definido 
+                            if(dudaObj.estado === "Mantenimiento" && dudaObj.usuarioAsignado === usr){
+                                //Para traer misReportes deben estar asignados a mi y tener estado matenimiento
                                 arrayDudas.push(dudaObj);
                             }else
-                                if(dudaObj.estado === estado && usr === "Gerente de Soporte"){
-                                    arrayDudas.push(dudaObj);
-                                }
-                        }else
-                            if(dudaObj.etiqueta === "Mantenimiento"){
                                 if(dudaObj.estado === estado && usr === "Gerente de Mantenimiento"){
-                                    arrayDudas.push(dudaObj);
-                                }else
-                                    if(dudaObj.estado === estado && dudaObj.usuarioAsignado === usr){
-                                        arrayDudas.push(dudaObj);
-                                    }
-                            }else
-                                if(usr === "operador" && dudaObj.estado === undefined){
+                                    //Siendo gerente de mantenimiento puedo traer los reportes con estado abierto-mantenimiento(asigno), en proceso-solucionado(terminar)
                                     arrayDudas.push(dudaObj);
                                 }
-                  }
-                
+                    }
            });
-           soporte.imprimeDudas(arrayDudas, usr, estado);
+           
+           mantenimiento.imprimeDudas(arrayDudas, usr, estado);
+           
         }, function (errorObject) {
           console.log("The read failed: " + errorObject.code);
         });
@@ -228,70 +83,162 @@ class Mantenimiento{
         d.removeChild(d.firstChild);
     }
     
-    modificaReporte(id, reporte, etiqueta){
+    imprimeDudas(array, usr, est){
+        
+        console.log("hol");
+        console.log(array);
+        
+        var arrayDuda = array;
+        let mantenimiento = new Mantenimiento();
+        
+        //-------------DISEÑO-------------
+        var totalRegistros = arrayDuda.length;
+        var noSumar;
+        if(totalRegistros === 1 || totalRegistros === 0){
+            noSumar = 0;
+        }else{
+            noSumar = 130/(totalRegistros-1);
+        }
+        var bande = 12;
+        //--------------------------------
+        
+        for(let i = 0; i<arrayDuda.length; i++){
+            
+            var conteFaqs = document.getElementById("contenedorDudas");
+            var divDuda = document.createElement("div");
+            
+            //-------------DISEÑO-------------
+                divDuda.style.border = "rgb("+bande+",144,12) 3px solid";
+                divDuda.style.backgroundColor = "rgba("+bande+",144,12,0.66)";
+                
+                bande = bande + noSumar;
+            //--------------------------------
+            
+            conteFaqs.appendChild(divDuda);
+            
+            
+            if(arrayDuda[i].estado === "Mantenimiento" && arrayDuda[i].usuarioAsignado === usr){
+                //Para traer misReportes deben estar asignados a mi y tener estado matenimiento
+                //A mis reportes les pondre un campo para poner como solucione el problema y un boton para guardar los cambios
+                
+                divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                
+                
+                var txtSolucion = document.createElement("input");
+                var btnGSolucion = document.createElement("input");
+                
+                
+                txtSolucion.type="text";
+                btnGSolucion.type="button";
+                txtSolucion.id = "div"+i;
+                
+                txtSolucion.placeholder = "Escribe aqui como solucionaste el problema";
+                btnGSolucion.value="GUARDA CAMBIOS";
+                
+                btnGSolucion.onclick = function(){
+                    var solu = document.getElementById("div"+i);
+                    mantenimiento.modificaEnProceso(arrayDuda[i].id, solu);
+                };
+                
+                conteFaqs.insertBefore(txtSolucion, divDuda.nextSibling);
+                conteFaqs.insertBefore(btnGSolucion, txtSolucion.nextSibling);
+                
+            }else
+                if(arrayDuda[i].estado === "En Proceso" && "Gerente de Mantenimiento" === usr){
+                    //Siendo gerente de mantenimiento puedo traigo los reportes con estado en proceso-solucionado(terminar)
+                    //para aceptar o rechazar la solucion pongo 2 botones
+                    
+                    divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                    
+                    var btnAcepta = document.createElement("input");
+                    var btnRechaza = document.createElement("input");
+                    
+                    btnAcepta.type="button";
+                    btnRechaza.type="button";
+                    
+                    btnAcepta.value="ACEPTAR"
+                    btnRechaza.value="RECHAZAR"
+                    
+                    btnAcepta.onclick = function(){
+                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Solucionado");
+                    };
+                    
+                    btnRechaza.onclick = function(){
+                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento");
+                    };
+                    
+                    conteFaqs.insertBefore(btnAcepta, divDuda.nextSibling);
+                    conteFaqs.insertBefore(btnRechaza, divDuda.nextSibling);
+                    
+                }else
+                        if(arrayDuda[i].usuarioAsignado === undefined && "Gerente de Mantenimiento" === usr){
+                            //Siendo gerente de mantenimiento puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno cambiando tambien el estado a mantenimiento
+                            //para asignarlos pongo botones con el nombre de los programadores, mas un boton para asignarmelo a mi
+                            
+                            divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                            
+                            var btnProgUno = document.createElement("input");
+                            var btnProgDos = document.createElement("input");
+                            var btnProgTres = document.createElement("input");
+                            var btnYo = document.createElement("input");
+                            
+                            btnProgUno.type = "button";
+                            btnProgDos.type = "button";
+                            btnProgTres.type = "button";
+                            btnYo.type = "button";
+                            
+                            btnProgUno.value = "CONSUELO";
+                            btnProgDos.value = "DANIEL";
+                            btnProgTres.value = "ZENELY";
+                            btnYo.value = "YO";
+                            
+                            //-----EVENTO ON CLICK A BOTONES-----
+                                btnProgUno.addEventListener("click", function(){
+                                    mantenimiento.asignaUsuario(arrayDuda[i].id, "consuelo@kep.com");
+                                });
+                                btnProgDos.addEventListener("click", function(){
+                                    mantenimiento.asignaUsuario(arrayDuda[i].id, "daniel@kep.com");
+                                });
+                                btnProgTres.addEventListener("click", function(){
+                                    mantenimiento.asignaUsuario(arrayDuda[i].id, "zenely@kep.com");
+                                });
+                                btnYo.addEventListener("click", function(){
+                                    mantenimiento.asignaUsuario(arrayDuda[i].id, "gerente_mantenimiento@kep.com");
+                                });
+                            //-------------------------------
+                            
+                            conteFaqs.appendChild(btnProgUno);
+                            conteFaqs.appendChild(btnProgDos);
+                            conteFaqs.appendChild(btnProgTres);
+                            conteFaqs.appendChild(btnYo);
+                        }
+                    
+        }
+   }
+   
+    modificaEnProceso(id, solucion){
+        firebase.database().ref("Buzon/"+id+"/respuesta").set(solucion.value);
+        firebase.database().ref("Buzon/"+id+"/estado").set("En Proceso");
+    }
+    
+    abreReporte(id, reporte, etiqueta){
         firebase.database().ref("Buzon/"+id+"/reporte").set(reporte);
         firebase.database().ref("Buzon/"+id+"/estado").set("Abierto");
         firebase.database().ref("Buzon/"+id+"/etiqueta").set(etiqueta);
     }
     
-    modificaSolucion(id, index, usr){
-        var solucion = document.getElementById("div"+index);
-        firebase.database().ref("Buzon/"+id+"/respuesta").set(solucion.value);
-        if(usr === "gerente_soporte@kep.com" || usr === "aylin@kep.com" || usr === "carolina@kep.com" || usr === "lucia@kep.com"){
-            firebase.database().ref("Buzon/"+id+"/estado").set("Solucionado");
-        }else
-            if(urs === "gerente_mantenimiento@kep.com"){
-                firebase.database().ref("Buzon/"+id+"/estado").set("En proceso");
-            }
-        
+    asignaUsuario(id, usr){
+        firebase.database().ref("Buzon/"+id+"/usuarioAsignado").set(usr);
+        firebase.database().ref("Buzon/"+id+"/estado").set("Mantenimiento");
     }
     
-    traeMisReportes(){
+    traeReportesAbiertos(){
         firebase.auth().onAuthStateChanged(user =>{
             if(user){
-                var soporte = new Soporte();
-                console.log("fyg: "+user.email);
-                soporte.traeDudas(user.email, "Asignado"); 
-            }else
-                //El usuario no esta autentificado
-                alert("Usuario no reconocido");
-        });
-    }
-    
-    guardaReporte(){
-        
-        var txtReporte = document.getElementById("txtReporte");
-        
-        
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                firebase.database().ref("Buzon/").once('value', function(snapshot) {
-                    var xId = snapshot.numChildren() + 1; 
-                    firebase.database().ref("Buzon/"+xId).set({
-                        estado: "Abierto",
-                        idUsuario: user.email,                    
-                        etiqueta: "Mantenimiento",
-                        reporte: txtReporte.value
-                    });
-                });
-            }else
-                alert("Usuario no reconocido");
-        });
-    }
-    
-    traeReportes(){
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                var soporte = new Soporte();
-                var usr;
-                if(user.email === "gerente_soporte@kep.com"){
-                    usr = "Gerente de Soporte";
-                }else
-                    if(user.email === "gerente_mantenimiento@kep.com"){
-                       usr = "Gerente de Mantenimiento";
-                    }
-                soporte.traeDudas(usr, "Abierto");
-                alert("usr: "+usr);
+                var mantenimiento = new Mantenimiento();
+                if(user.email === "gerente_mantenimiento@kep.com"){
+                    mantenimiento.traeDudas("Gerente de Mantenimiento", "Abierto");
+                }
             }else
                 //El usuario no esta autentificado
                 alert("Usuario no reconocido");

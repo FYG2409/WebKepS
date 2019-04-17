@@ -93,12 +93,14 @@ class Soporte{
                 
                 txtSolucion.type="text";
                 btnGSolucion.type="button";
+                txtSolucion.id = "div"+i;
                 
                 txtSolucion.placeholder = "Escribe aqui como solucionaste el problema";
                 btnGSolucion.value="GUARDA CAMBIOS";
                 
                 btnGSolucion.onclick = function(){
-                    soporte.modificaSolucion(arrayDuda[i].id, txtSolucion);
+                    var solu = document.getElementById("div"+i);
+                    soporte.modificaSolucion(arrayDuda[i].id, solu);
                 };
                 
                 conteFaqs.insertBefore(txtSolucion, divDuda.nextSibling);
