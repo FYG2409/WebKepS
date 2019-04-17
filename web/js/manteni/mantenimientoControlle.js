@@ -2,6 +2,7 @@ btnGuardaReporteM = document.getElementById("btnGuardaReporteM");
 btnMisReportes = document.getElementById("btnMisReportes");
 btnReportes = document.getElementById("btnReportes");
 btnPorValidar = document.getElementById("btnPorValidar");
+btnTickets = document.getElementById("btnTickets");
 
 
 if(!(btnGuardaReporteM === null)){
@@ -31,3 +32,12 @@ if(!(btnPorValidar === null)){
         mantenimiento.traeDudas("Gerente de Mantenimiento", "En Proceso");
     });
 }
+
+if(!(btnTickets === null)){
+    btnTickets.addEventListener("click", function(){
+        var mantenimiento = new Mantenimiento();
+        mantenimiento.traeTickets();
+    });
+}
+
+

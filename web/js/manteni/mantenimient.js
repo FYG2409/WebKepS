@@ -26,7 +26,7 @@ class Mantenimiento{
         firebase.auth().onAuthStateChanged(user =>{
             if(user){
                 var mantenimiento = new Mantenimiento();
-                mantenimiento.traeDudas(user.email, "Asignado"); 
+                mantenimiento.traeDudas(user.email, "Mantenimiento"); 
             }else
                 alert("Usuario no reconocido");
         });
@@ -60,14 +60,21 @@ class Mantenimiento{
                     if(dudaObj.etiqueta === "Mantenimiento" && !(dudaObj.reporte === undefined)){
                         //los de mantenimiento (gerente y programador) reciben las dudas con un reporte definido 
                             if(dudaObj.estado === "Mantenimiento" && dudaObj.usuarioAsignado === usr){
+                                alert("UNO");
                                 //Para traer misReportes deben estar asignados a mi y tener estado matenimiento
                                 arrayDudas.push(dudaObj);
                             }else
                                 if(dudaObj.estado === estado && usr === "Gerente de Mantenimiento"){
+                                    alert("DOS");
                                     //Siendo gerente de mantenimiento puedo traer los reportes con estado abierto-mantenimiento(asigno), en proceso-solucionado(terminar)
                                     arrayDudas.push(dudaObj);
                                 }
-                    }
+                    }else
+                        if(dudaObj.etiqueta === "Soporte" && dudaObj.usuarioAsignado === "Mantenimiento" && estado === "Asignado"){
+                            alert("TRES");
+                            //si viene de soporte y el usuario asignado es mantenimiento
+                            arrayDudas.push(dudaObj);
+                        }
            });
            
            mantenimiento.imprimeDudas(arrayDudas, usr, estado);
@@ -84,7 +91,8 @@ class Mantenimiento{
     }
     
     imprimeDudas(array, usr, est){
-        
+        console.log("gyf "+est);
+        console.log("fyg "+usr);
         console.log("hol");
         console.log(array);
         
@@ -171,27 +179,67 @@ class Mantenimiento{
                     conteFaqs.insertBefore(btnRechaza, divDuda.nextSibling);
                     
                 }else
-                        if(arrayDuda[i].usuarioAsignado === undefined && "Gerente de Mantenimiento" === usr){
+                    if(arrayDuda[i].usuarioAsignado === undefined && "Gerente de Mantenimiento" === usr){
+                        //Siendo gerente de mantenimiento puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno cambiando tambien el estado a mantenimiento
+                        //para asignarlos pongo botones con el nombre de los programadores, mas un boton para asignarmelo a mi
+
+                        divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+
+                        var btnProgUno = document.createElement("input");
+                        var btnProgDos = document.createElement("input");
+                        var btnProgTres = document.createElement("input");
+                        var btnYo = document.createElement("input");
+
+                        btnProgUno.type = "button";
+                        btnProgDos.type = "button";
+                        btnProgTres.type = "button";
+                        btnYo.type = "button";
+
+                        btnProgUno.value = "CONSUELO";
+                        btnProgDos.value = "DANIEL";
+                        btnProgTres.value = "ZENELY";
+                        btnYo.value = "YO";
+
+                        //-----EVENTO ON CLICK A BOTONES-----
+                            btnProgUno.addEventListener("click", function(){
+                                mantenimiento.asignaUsuario(arrayDuda[i].id, "consuelo@kep.com");
+                            });
+                            btnProgDos.addEventListener("click", function(){
+                                mantenimiento.asignaUsuario(arrayDuda[i].id, "daniel@kep.com");
+                            });
+                            btnProgTres.addEventListener("click", function(){
+                                mantenimiento.asignaUsuario(arrayDuda[i].id, "zenely@kep.com");
+                            });
+                            btnYo.addEventListener("click", function(){
+                                mantenimiento.asignaUsuario(arrayDuda[i].id, "gerente_mantenimiento@kep.com");
+                            });
+                        //-------------------------------
+
+                        conteFaqs.appendChild(btnProgUno);
+                        conteFaqs.appendChild(btnProgDos);
+                        conteFaqs.appendChild(btnProgTres);
+                        conteFaqs.appendChild(btnYo);
+                    }else
+                        if(arrayDuda[i].usuarioAsignado === "Mantenimiento" && arrayDuda[i].etiqueta === "Soporte" && arrayDuda[i].estado === "Asignado"){
                             //Siendo gerente de mantenimiento puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno cambiando tambien el estado a mantenimiento
                             //para asignarlos pongo botones con el nombre de los programadores, mas un boton para asignarmelo a mi
-                            
                             divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
-                            
+
                             var btnProgUno = document.createElement("input");
                             var btnProgDos = document.createElement("input");
                             var btnProgTres = document.createElement("input");
                             var btnYo = document.createElement("input");
-                            
+
                             btnProgUno.type = "button";
                             btnProgDos.type = "button";
                             btnProgTres.type = "button";
                             btnYo.type = "button";
-                            
+
                             btnProgUno.value = "CONSUELO";
                             btnProgDos.value = "DANIEL";
                             btnProgTres.value = "ZENELY";
                             btnYo.value = "YO";
-                            
+
                             //-----EVENTO ON CLICK A BOTONES-----
                                 btnProgUno.addEventListener("click", function(){
                                     mantenimiento.asignaUsuario(arrayDuda[i].id, "consuelo@kep.com");
@@ -206,7 +254,7 @@ class Mantenimiento{
                                     mantenimiento.asignaUsuario(arrayDuda[i].id, "gerente_mantenimiento@kep.com");
                                 });
                             //-------------------------------
-                            
+
                             conteFaqs.appendChild(btnProgUno);
                             conteFaqs.appendChild(btnProgDos);
                             conteFaqs.appendChild(btnProgTres);
@@ -238,6 +286,19 @@ class Mantenimiento{
                 var mantenimiento = new Mantenimiento();
                 if(user.email === "gerente_mantenimiento@kep.com"){
                     mantenimiento.traeDudas("Gerente de Mantenimiento", "Abierto");
+                }
+            }else
+                //El usuario no esta autentificado
+                alert("Usuario no reconocido");
+        });
+    }
+    
+    traeTickets(){
+        firebase.auth().onAuthStateChanged(user =>{
+            if(user){
+                var mantenimiento = new Mantenimiento();
+                if(user.email === "gerente_mantenimiento@kep.com"){
+                    mantenimiento.traeDudas("Gerente de Mantenimiento", "Asignado");
                 }
             }else
                 //El usuario no esta autentificado

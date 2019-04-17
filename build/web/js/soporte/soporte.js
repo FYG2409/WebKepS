@@ -169,6 +169,7 @@ class Soporte{
                         if(arrayDuda[i].usuarioAsignado === undefined && "Gerente de Soporte" === usr){
                             //Siendo gerente de sopote puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno
                             //para asignarlos pongo botones con el nombre de los ingenieros, mas un boton para asignarmelo a mi
+                            //tambien pongo un boton para enviarlo como ticket a mantenimiento
                             
                             divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
                             
@@ -176,16 +177,19 @@ class Soporte{
                             var btnProgDos = document.createElement("input");
                             var btnProgTres = document.createElement("input");
                             var btnYo = document.createElement("input");
+                            var btnMantenimiento = document.createElement("input");
                             
                             btnProgUno.type = "button";
                             btnProgDos.type = "button";
                             btnProgTres.type = "button";
                             btnYo.type = "button";
+                            btnMantenimiento.type = "button";
                             
                             btnProgUno.value = "AYLIN";
                             btnProgDos.value = "CAROLINA";
                             btnProgTres.value = "LUCIA";
                             btnYo.value = "YO";
+                            btnMantenimiento.value = "MANTENIMIENTO";
                             
                             //-----EVENTO ON CLICK A BOTONES-----
                                 btnProgUno.addEventListener("click", function(){
@@ -200,12 +204,16 @@ class Soporte{
                                 btnYo.addEventListener("click", function(){
                                     soporte.asignaUsuario(arrayDuda[i].id, "gerente_soporte@kep.com");
                                 });
+                                btnMantenimiento.addEventListener("click", function(){
+                                    soporte.asignaUsuario(arrayDuda[i].id, "Mantenimiento");
+                                });
                             //-------------------------------
                             
                             conteFaqs.appendChild(btnProgUno);
                             conteFaqs.appendChild(btnProgDos);
                             conteFaqs.appendChild(btnProgTres);
                             conteFaqs.appendChild(btnYo);
+                            conteFaqs.appendChild(btnMantenimiento);
                         }
         }
    }
