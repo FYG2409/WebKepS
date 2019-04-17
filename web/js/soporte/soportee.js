@@ -1,6 +1,7 @@
 class Soporte{
     
     imprimeDudas(array, usr, est){
+        console.log(array);
         var arrayDuda = [];
         arrayDuda = array;
         var totalRegistros = arrayDuda.length;
@@ -18,14 +19,13 @@ class Soporte{
         var txtIdUsuario = document.getElementById("txtIdUsuario");
         var txtRespuesta = document.getElementById("txtRespuesta");
         var txtEncargado = document.getElementById("txtEncargado");
+        var btnGuardaReporte = document.getElementById("btnGuardaReporte");
        
         for(let i = 0; i<arrayDuda.length; i++){
             //aquí
             var divDuda = document.createElement("div");
             var txtReporte = document.getElementById("txtReporte");
-            var btnGuardaReporte = document.getElementById("btnGuardaReporte");
             
-            divDuda.innerHTML = "<p>"+arrayDuda[i].duda+"</p>";
             
             //-------------DISEÑO-------------
                 divDuda.style.border = "rgb("+bande+",144,12) 3px solid";
@@ -38,6 +38,8 @@ class Soporte{
             conteFaqs.appendChild(divDuda);
             
             if(arrayDuda[i].estado === "Asignado" && arrayDuda[i].usuarioAsignado === usr){
+                divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                
                 var txtSolucion = document.createElement("input");
                 var btnGSolucion = document.createElement("input");
                 txtSolucion.type="text";
@@ -54,7 +56,9 @@ class Soporte{
                 conteFaqs.insertBefore(txtSolucion, divDuda.nextSibling);
                 conteFaqs.insertBefore(btnGSolucion, txtSolucion.nextSibling);
             }else
-                if(arrayDuda[i].estado === "Solucionado" && arrayDuda[i].usuarioAsignado === usr){
+                if(arrayDuda[i].estado === "Solucionado" && "Gerente de Soporte" === usr){
+                    console.log("FEIK");
+                    divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
                     var btnAcepta = document.createElement("input");
                     var btnRechaza = document.createElement("input");
                     btnAcepta.type="button";
@@ -73,6 +77,8 @@ class Soporte{
                     conteFaqs.insertBefore(btnRechaza, divDuda.nextSibling);
                 }else
                     if(usr === "operador"){
+                        divDuda.innerHTML = "<p>"+arrayDuda[i].duda+"</p>";
+                        
                         //-----EVENTO ON CLICK A DIV-----
                             divDuda.addEventListener("click", function(){
                                 txtEstado.disabled = true;
@@ -82,15 +88,18 @@ class Soporte{
                                 txtIdUsuario.disabled = true;
                                 txtRespuesta.disabled = true;
                                 txtEncargado.disabled = true;
+
+                                btnGuardaReporte.onclick = function(){
+                                let soporte = new Soporte();
+                                soporte.modificaReporte(arrayDuda[i].id,txtReporte.value, "Soporte");
+                                };
                             });
 
-                            btnGuardaReporte.addEventListener("click", function(){
-                                let soporte = new Soporte();
-                                soporte.modificaReporte(arrayDuda[i].id,txtReporte.value);
-                            });
                         //-------------------------------
                     }else
-                        if(usr === "Gerente de Soporte" && arrayDuda[i].usuarioAsignado === undefined){
+                        if(arrayDuda[i].usuarioAsignado === undefined){
+                            divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                            
                             var btnProgUno = document.createElement("input");
                             var btnProgDos = document.createElement("input");
                             var btnProgTres = document.createElement("input");
@@ -99,14 +108,13 @@ class Soporte{
                             btnProgDos.type = "button";
                             btnProgTres.type = "button";
                             btnYo.type = "button";
-                            btnProgUno.value = "UNO";
-                            btnProgDos.value = "DOS";
-                            btnProgTres.value = "TRES";
-                            btnYo.value = "YO";
-
-
-
-                            //-----EVENTO ON CLICK A DIV-----
+                            
+                            if(usr === "Gerente de Soporte"){
+                                btnProgUno.value = "Aylin";
+                                btnProgDos.value = "Carolina";
+                                btnProgTres.value = "Lucia";
+                                btnYo.value = "YO";
+                                //-----EVENTO ON CLICK A DIV-----
                                 btnProgUno.addEventListener("click", function(){
                                     firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("aylin@kep.com");
                                     firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
@@ -124,6 +132,32 @@ class Soporte{
                                     firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
                                 });
                             //-------------------------------
+                            }else
+                                if(usr === "Gerente de Mantenimiento"){
+                                    btnProgUno.value = "Consuelo";
+                                    btnProgDos.value = "Daniel";
+                                    btnProgTres.value = "Zenely";
+                                    btnYo.value = "YO";
+                                    //-----EVENTO ON CLICK A DIV-----
+                                    btnProgUno.addEventListener("click", function(){
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("consuelo@kep.com");
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
+                                    });
+                                    btnProgDos.addEventListener("click", function(){
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("daniel@kep.com");
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
+                                    });
+                                    btnProgTres.addEventListener("click", function(){
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("zenely@kep.com");
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
+                                    });
+                                    btnYo.addEventListener("click", function(){
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/usuarioAsignado").set("gerente_mantenimiento@kep.com");
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
+                                    });
+                                //-------------------------------
+                                }
+                            
 
                             conteFaqs.appendChild(btnProgUno);
                             conteFaqs.appendChild(btnProgDos);
@@ -138,6 +172,7 @@ class Soporte{
     
     
     traeDudas(usr, estado){
+        console.log("Usuario: "+usr);
         let soporte = new Soporte();
         console.log("entre: "+usr+" Estado: "+estado);
         var arrayDudas = [];
@@ -149,19 +184,32 @@ class Soporte{
                 var dudaObj = {
                     id: duda.key,
                     duda: newDuda.duda,
+                    reporte: newDuda.reporte,
                     idUsuario: newDuda.idUsuario,
                     usuarioAsignado: newDuda.usuarioAsignado,
-                    estado: newDuda.estado
+                    estado: newDuda.estado,
+                    etiqueta: newDuda.etiqueta
                   };
-                if(dudaObj.estado === estado && dudaObj.usuarioAsignado === usr){
-                    arrayDudas.push(dudaObj);
-                }else
-                    if(dudaObj.estado === estado && usr === "Gerente de Soporte"){
+                if(dudaObj.etiqueta === "Soporte" && !(dudaObj.reporte === undefined)){
+                    if(dudaObj.estado === estado && dudaObj.usuarioAsignado === usr){
                         arrayDudas.push(dudaObj);
+                    }else
+                        if(dudaObj.estado === estado && usr === "Gerente de Soporte"){
+                            alert("j");
+                            arrayDudas.push(dudaObj);
+                        }
+                }else
+                    if(dudaObj.etiqueta === "Mantenimiento"){
+                        alert("K");
+                        if(dudaObj.estado === estado && usr === "Gerente de Mantenimiento"){
+                            alert("W");
+                            arrayDudas.push(dudaObj);
+                        }
                     }else
                         if(usr === "operador" && dudaObj.estado === undefined){
                             arrayDudas.push(dudaObj);
                         }
+                
                 
            });
            soporte.imprimeDudas(arrayDudas, usr, estado);
@@ -176,9 +224,10 @@ class Soporte{
         d.removeChild(d.firstChild);
     }
     
-    modificaReporte(id, reporte){
+    modificaReporte(id, reporte, etiqueta){
         firebase.database().ref("Buzon/"+id+"/reporte").set(reporte);
         firebase.database().ref("Buzon/"+id+"/estado").set("Abierto");
+        firebase.database().ref("Buzon/"+id+"/etiqueta").set(etiqueta);
     }
     
     modificaSolucion(id, index){
@@ -199,5 +248,24 @@ class Soporte{
         });
     }
     
-    
+    guardaReporte(){
+        
+        var txtReporte = document.getElementById("txtReporte");
+        
+        
+        firebase.auth().onAuthStateChanged(user =>{
+            if(user){
+                firebase.database().ref("Buzon/").once('value', function(snapshot) {
+                    var xId = snapshot.numChildren() + 1; 
+                    firebase.database().ref("Buzon/"+xId).set({
+                        estado: "Abierto",
+                        idUsuario: user.email,                    
+                        etiqueta: "Mantenimiento",
+                        reporte: txtReporte.value
+                    });
+                });
+            }else
+                alert("Usuario no reconocido");
+        });
+    }
 }

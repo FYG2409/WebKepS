@@ -20,11 +20,9 @@ function redirige(email){
                     alert("Bienvenido Ingeniero de Soporte");
                     window.location.href = "html/IngenieroSoporte.html";
                 }else
-                    if(txtEmail === "gerenteMantenimiento@kep.com"){
+                    if(txtEmail === "gerente_mantenimiento@kep.com"){
                         alert("Bienvenido Gerente de Mantenimiento");
-                        //Intent intent = new Intent(this, MantenimientoActivity.class);
-                        //intent.putExtra("tipoUsuario", "gerenteMantenimiento");
-                        //startActivity(intent);
+                        window.location.href = "html/GerenteMantenimiento.html";
                     }else
                         if(txtEmail === "asesor@kep.com"){
                             alert("Bienvenido Asesor");
