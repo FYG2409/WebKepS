@@ -57,22 +57,23 @@ class Mantenimiento{
                     etiqueta: newDuda.etiqueta
                   };
                   
-                    if(dudaObj.etiqueta === "Mantenimiento" && !(dudaObj.reporte === undefined)){
+                    if(!(dudaObj.reporte === undefined)){
                         //los de mantenimiento (gerente y programador) reciben las dudas con un reporte definido 
                             if(dudaObj.estado === "Mantenimiento" && dudaObj.usuarioAsignado === usr){
                                 alert("UNO");
                                 //Para traer misReportes deben estar asignados a mi y tener estado matenimiento
                                 arrayDudas.push(dudaObj);
                             }else
-                                if(dudaObj.estado === estado && usr === "Gerente de Mantenimiento"){
+                                if(dudaObj.estado === estado && usr === "Gerente de Mantenimiento" && !(dudaObj.etiqueta === "Soporte")){
                                     alert("DOS");
                                     //Siendo gerente de mantenimiento puedo traer los reportes con estado abierto-mantenimiento(asigno), en proceso-solucionado(terminar)
                                     arrayDudas.push(dudaObj);
                                 }
                     }else
-                        if(dudaObj.etiqueta === "Soporte" && dudaObj.usuarioAsignado === "Mantenimiento" && estado === "Asignado"){
+                        if(dudaObj.etiqueta === "Ticket" && dudaObj.estado === estado && usr === "Gerente de Mantenimiento"){
                             alert("TRES");
                             //si viene de soporte y el usuario asignado es mantenimiento
+                            //Esto es para tickets
                             arrayDudas.push(dudaObj);
                         }
            });
@@ -220,9 +221,10 @@ class Mantenimiento{
                         conteFaqs.appendChild(btnProgTres);
                         conteFaqs.appendChild(btnYo);
                     }else
-                        if(arrayDuda[i].usuarioAsignado === "Mantenimiento" && arrayDuda[i].etiqueta === "Soporte" && arrayDuda[i].estado === "Asignado"){
+                        if(arrayDuda[i].etiqueta === "Ticket" && arrayDuda[i].estado === "Asignado" && usr === "Gerente de Mantenimiento"){
                             //Siendo gerente de mantenimiento puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno cambiando tambien el estado a mantenimiento
                             //para asignarlos pongo botones con el nombre de los programadores, mas un boton para asignarmelo a mi
+                            //esto es para tickets
                             divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
 
                             var btnProgUno = document.createElement("input");

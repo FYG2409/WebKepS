@@ -4,6 +4,8 @@ btnPorValidar = document.getElementById("btnPorValidar");
 bodyGerenteS = document.getElementById("bodyGerenteS");
 bodyOperadorS = document.getElementById("bodyOperadorS");
 bodyIngenieroS = document.getElementById("bodyIngenieroS");
+btnTickets = document.getElementById("btnTickets");
+
 
 
 if(!(bodyGerenteS === null)){
@@ -49,3 +51,13 @@ if(!(bodyIngenieroS === null)){
         soporte.traeMisReportes();
     };
 }
+
+if(!(btnTickets === null)){
+    btnTickets.addEventListener("click", function(){
+        console.log("Entre a tickets");
+        var soporte = new Soporte();
+        soporte.traeTickets();
+    });
+}
+
+

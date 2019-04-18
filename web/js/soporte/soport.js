@@ -28,23 +28,33 @@ class Soporte{
                   
                     if(dudaObj.etiqueta === "Soporte" && !(dudaObj.reporte === undefined)){
                         //los de soporte (gerente e ingeniero) reciben las dudas con un reporte definido por el operador
-                            if(dudaObj.estado === "Asignado" && dudaObj.usuarioAsignado === usr){
+                            if(dudaObj.estado === estado && dudaObj.usuarioAsignado === usr){
+                                alert("c");
                                 //Para traer misReportes deben estar asignados a mi y tener estado asignado
                                 arrayDudas.push(dudaObj);
                             }else
                                 if(dudaObj.estado === estado && usr === "Gerente de Soporte"){
+                                    alert("a");
                                     //Siendo gerente de sopote puedo traer los reportes con estado abierto parar asignarlo y solucionado para cerrarlo
                                     arrayDudas.push(dudaObj);
                                 }
                     }else
-                        if(dudaObj.estado === undefined && usr === "operador" ){
-                            //los operadores reciben los reportes sin estado, ya que ellos abren el reporte
+                        if(dudaObj.etiqueta === estado && usr === "Gerente de Soporte"){
+                            alert("b");
+                            //si viene de soporte y el usuario asignado es mantenimiento
+                            //Esto es para tickets
                             arrayDudas.push(dudaObj);
-                        }
+                        }else
+                            if(dudaObj.estado === undefined && usr === "operador" ){
+                                //los operadores reciben los reportes sin estado, ya que ellos abren el reporte
+                                arrayDudas.push(dudaObj);
+                            }
                   
            });
            
            soporte.imprimeDudas(arrayDudas, usr, estado);
+           console.log("array");
+           console.log(arrayDudas);
            
         }, function (errorObject) {
           console.log("The read failed: " + errorObject.code);
@@ -107,9 +117,10 @@ class Soporte{
                 conteFaqs.insertBefore(btnGSolucion, txtSolucion.nextSibling);
                 
             }else
-                if(arrayDuda[i].estado === "Solucionado" && "Gerente de Soporte" === usr){
+                if((arrayDuda[i].estado === "Solucionado" && "Gerente de Soporte" === usr) || (arrayDuda[i].etiqueta === est && usr === "Gerente de Soporte" && arrayDuda[i].estado === "Solucionado")){
                     //Siendo gerente de sopote puedo traigo los reportes solucionados para cerrarlos
                     //para aceptar o rechazar la solucion pongo 2 botones
+                    //la segunda validacion, es decir despues del || es para tickets
                     
                     divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
                     
@@ -205,7 +216,7 @@ class Soporte{
                                     soporte.asignaUsuario(arrayDuda[i].id, "gerente_soporte@kep.com");
                                 });
                                 btnMantenimiento.addEventListener("click", function(){
-                                    soporte.asignaUsuario(arrayDuda[i].id, "Mantenimiento");
+                                    soporte.iniciaTicket(arrayDuda[i].id);
                                 });
                             //-------------------------------
                             
@@ -214,7 +225,10 @@ class Soporte{
                             conteFaqs.appendChild(btnProgTres);
                             conteFaqs.appendChild(btnYo);
                             conteFaqs.appendChild(btnMantenimiento);
-                        }
+                        }else
+                            if(arrayDuda[i].etiqueta === est && usr === "Gerente de Soporte"){
+                                divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                            }
         }
    }
    
@@ -231,6 +245,11 @@ class Soporte{
     
     asignaUsuario(id, usr){
         firebase.database().ref("Buzon/"+id+"/usuarioAsignado").set(usr);
+        firebase.database().ref("Buzon/"+id+"/estado").set("Asignado");
+    }
+    
+    iniciaTicket(id){
+        firebase.database().ref("Buzon/"+id+"/etiqueta").set("Ticket");
         firebase.database().ref("Buzon/"+id+"/estado").set("Asignado");
     }
 
@@ -259,6 +278,20 @@ class Soporte{
                 }
             }else
                 //El usuario no esta autentificado
+                alert("Usuario no reconocido");
+        });
+    }
+    
+    traeTickets(){
+        firebase.auth().onAuthStateChanged(user =>{
+            if(user){
+                console.log("Hay: "+user.email);
+                if(user.email === "gerente_soporte@kep.com"){
+                    console.log("Hay x2");
+                    var soporte = new Soporte();
+                    soporte.traeDudas("Gerente de Soporte", "Ticket");
+                }
+            }else
                 alert("Usuario no reconocido");
         });
     }

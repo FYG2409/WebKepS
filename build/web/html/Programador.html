@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>OPERADOR</title>
+        <title>PROGRAMADOR</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body id="bodyOperadorS">
-        <div id="conteReporte">
-            <input type="text" id="txtEstado" placeholder="STATUS" />
-            <input type="text" id="txtDuda" placeholder="¿QUE REPORTO EL USUARIO?" />
-            <input type="text" id="txtIdUsuario" placeholder="¿QUIEN LO MANDA?" />
-            <input type="text" id="txtRespuesta" placeholder="¿COMO SE SOLUCIONO?" />
-            <input type="text" id="txtEncargado" placeholder="¿QUIEN LO RESOLVIO?" />
+    <body id="bodyProgramadorM">
+        
+        <div id="botones">
+            <input type="button" id="btnMisReportes" value="MIS REPORTES"/>
+            <hr>
+        </div>
+        
+        <div id="reporte">
             <input type="text" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" />
-            <input type="button" id="btnGuardaReporte" value="GUARDA RESPORTE"/>
+            <input type="button" id="btnGuardaReporteM" value="GUARDA REPORTE"/>
+            <hr>
         </div>
         
         <div id="contenedorDudas"></div>
-        
         
         <!--  FIREBASE  -->
             <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
@@ -30,8 +31,7 @@
         
         <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
         <script type="text/javascript" src="../js/generall.js"></script>
-        <script type="text/javascript" src="../js/soporte/soport.js"></script>
-        <script type="text/javascript" src="../js/soporte/soporteControlle.js"></script>
-        
+        <script type="text/javascript" src="../js/manteni/mantenimient.js"></script>
+        <script type="text/javascript" src="../js/manteni/mantenimientoController.js"></script>
     </body>
 </html>

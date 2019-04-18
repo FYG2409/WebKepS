@@ -3,7 +3,23 @@ btnMisReportes = document.getElementById("btnMisReportes");
 btnReportes = document.getElementById("btnReportes");
 btnPorValidar = document.getElementById("btnPorValidar");
 btnTickets = document.getElementById("btnTickets");
+bodyGerenteM = document.getElementById("bodyGerenteM");
+bodyProgramadorM = document.getElementById("bodyProgramadorM");
 
+
+if(!(bodyGerenteM === null)){
+    bodyGerenteM.onload = function(){
+        var mantenimiento = new Mantenimiento();
+        mantenimiento.traeReportesAbiertos();
+    };
+}
+
+if(!(bodyProgramadorM === null)){
+    bodyProgramadorM.onload = function(){
+        var mantenimiento = new Mantenimiento();
+        mantenimiento.traeMisReportes();
+    };
+}
 
 if(!(btnGuardaReporteM === null)){
     btnGuardaReporteM.addEventListener("click", function(){
