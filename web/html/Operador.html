@@ -6,14 +6,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body id="bodyOperadorS">
+        <div id="botones">
+            <input type="button" id="btnReportesO" value="REPORTES"/>
+            <input type="button" id="btnExpediente" value="VER EXPEDIENTE"/>
+        </div>
+        
         <div id="conteReporte">
-            <input type="text" id="txtEstado" placeholder="STATUS" />
-            <input type="text" id="txtDuda" placeholder="¿QUE REPORTO EL USUARIO?" />
-            <input type="text" id="txtIdUsuario" placeholder="¿QUIEN LO MANDA?" />
-            <input type="text" id="txtRespuesta" placeholder="¿COMO SE SOLUCIONO?" />
-            <input type="text" id="txtEncargado" placeholder="¿QUIEN LO RESOLVIO?" />
-            <input type="text" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" />
-            <input type="button" id="btnGuardaReporte" value="GUARDA RESPORTE"/>
+            <input type="text" id="txtEstado" placeholder="STATUS" disabled/>
+            <input type="text" id="txtDuda" placeholder="¿QUE REPORTO EL USUARIO?" disabled/>
+            <input type="text" id="txtIdUsuario" placeholder="¿QUIEN LO MANDA?" disabled/>
+            <input type="text" id="txtRespuesta" placeholder="¿COMO SE SOLUCIONO?" disabled/>
+            <input type="text" id="txtEncargado" placeholder="¿QUIEN LO RESOLVIO?" disabled/>
+            <input type="text" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" disabled/>
+            <input type="button" id="btnGuardaReporte" value="GUARDA RESPORTE" disabled/>
         </div>
         
         <div id="contenedorDudas"></div>
@@ -31,7 +36,7 @@
         <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
         <script type="text/javascript" src="../js/generall.js"></script>
         <script type="text/javascript" src="../js/soporte/soport.js"></script>
-        <script type="text/javascript" src="../js/soporte/soporteControlle.js"></script>
+        <script type="text/javascript" src="../js/soporte/soporteControll.js"></script>
         
     </body>
 </html>

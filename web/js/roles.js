@@ -11,7 +11,7 @@ function redirige(email){
             alert("Bienvenido Gerente de Soporte");
             window.location.href = "html/GerenteSoporte.html";
         }else
-            if(txtEmail === "aylin@kep.com"){
+            if(txtEmail === "aylin@kep.com" || txtEmail === "carolina@kep.com" || txtEmail === "lucia@kep.com"){
                 alert("Bienvenido Ingeniero de Soporte");
                 window.location.href = "html/IngenieroSoporte.html";
             }else
@@ -19,29 +19,13 @@ function redirige(email){
                     alert("Bienvenido Gerente de Mantenimiento");
                     window.location.href = "html/GerenteMantenimiento.html";
                 }else
-                    if(txtEmail === "editor@kep.com"){
-                        alert("Bienvenido Editor");
-                        window.location.href = "html/Editor.html";
+                    if(txtEmail === "consuelo@kep.com" || txtEmail === "daniel@kep.com" || txtEmail === "zenely@kep.com"){
+                        alert("Bienvenido Programador")
+                        window.location.href = "html/Programador.html";
                     }else
-                        if(txtEmail === "carolina@kep.com"){
-                            alert("Bienvenido Ingeniero de Soporte");
-                            window.location.href = "html/IngenieroSoporte.html";
-                        }else
-                            if(txtEmail === "lucia@kep.com"){
-                                alert("Bienvenido Ingeniero de Soporte");
-                                window.location.href = "html/IngenieroSoporte.html";
-                            }else
-                                if(txtEmail === "consuelo@kep.com"){
-                                    alert("Bienvenido Programador")
-                                    window.location.href = "html/Programador.html";
-                                }else
-                                    if(txtEmail === "daniel@kep.com"){
-                                        alert("Bienvenido Programador")
-                                        window.location.href = "html/Programador.html";
-                                    }else
-                                    if(txtEmail === "zenely@kep.com"){
-                                        alert("Bienvenido Programador")
-                                        window.location.href = "html/Programador.html";
-                                    }
+                        if(txtEmail === "editor@kep.com"){
+                            alert("Bienvenido Editor");
+                            window.location.href = "html/Editor.html";
+                        }
 
 }

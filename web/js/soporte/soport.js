@@ -1,14 +1,12 @@
 class Soporte{
     
     traeDudas(usr, estado){
-        
-        console.log("traeDudas: "+" usuario: " +usr+" estado: "+estado);
-        
+        firebase.database().ref("Buzon").off();
         let soporte = new Soporte();
         var arrayDudas = [];
         
         firebase.database().ref("Buzon").on("value", function(querySnapshot) {
-            
+          console.log("traeDudas: "+" usuario: " +usr+" estado: "+estado);
           soporte.limpiar();
           arrayDudas = [];
           
@@ -19,36 +17,48 @@ class Soporte{
                 var dudaObj = {
                     id: duda.key,
                     duda: newDuda.duda,
-                    reporte: newDuda.reporte,
-                    idUsuario: newDuda.idUsuario,
-                    usuarioAsignado: newDuda.usuarioAsignado,
                     estado: newDuda.estado,
-                    etiqueta: newDuda.etiqueta
+                    etiqueta: newDuda.etiqueta,
+                    idUsuario: newDuda.idUsuario,
+                    reporte: newDuda.reporte,
+                    respuesta: newDuda.respuesta,
+                    usuarioAsignado: newDuda.usuarioAsignado
                   };
+                  
+                  console.log(dudaObj.estado +"   "+usr);
                   
                     if(dudaObj.etiqueta === "Soporte" && !(dudaObj.reporte === undefined)){
                         //los de soporte (gerente e ingeniero) reciben las dudas con un reporte definido por el operador
                             if(dudaObj.estado === estado && dudaObj.usuarioAsignado === usr){
+                                console.log("c");
                                 alert("c");
                                 //Para traer misReportes deben estar asignados a mi y tener estado asignado
                                 arrayDudas.push(dudaObj);
                             }else
                                 if(dudaObj.estado === estado && usr === "Gerente de Soporte"){
                                     alert("a");
+                                    console.log("a");
                                     //Siendo gerente de sopote puedo traer los reportes con estado abierto parar asignarlo y solucionado para cerrarlo
                                     arrayDudas.push(dudaObj);
                                 }
                     }else
-                        if(dudaObj.etiqueta === estado && usr === "Gerente de Soporte"){
+                        if(dudaObj.etiqueta === estado && usr === "Gerente de Soporte" && !(dudaObj.estado === "Cerrado")){
                             alert("b");
+                            console.log("b");
                             //si viene de soporte y el usuario asignado es mantenimiento
                             //Esto es para tickets
                             arrayDudas.push(dudaObj);
-                        }else
-                            if(dudaObj.estado === undefined && usr === "operador" ){
-                                //los operadores reciben los reportes sin estado, ya que ellos abren el reporte
-                                arrayDudas.push(dudaObj);
-                            }
+                        }
+                        if(dudaObj.estado === undefined && usr === "operador" ){
+                            console.log("e");
+                            //los operadores reciben los reportes sin estado, ya que ellos abren el reporte
+                            arrayDudas.push(dudaObj);
+                        }
+                        if(dudaObj.estado === "Cerrado" && usr === "No importa"){
+                            console.log("d");
+                            alert("d");
+                            arrayDudas.push(dudaObj);
+                        }
                   
            });
            
@@ -62,7 +72,9 @@ class Soporte{
     }
     
     imprimeDudas(array, usr, est){
-        
+        console.log("estado; "+est);
+        console.log("Hi " + usr);
+        console.log(array);
         var arrayDuda = array;
         let soporte = new Soporte();
         
@@ -89,13 +101,11 @@ class Soporte{
                 bande = bande + noSumar;
             //--------------------------------
             
-            conteFaqs.appendChild(divDuda);
-            
             
             if(arrayDuda[i].estado === "Asignado" && arrayDuda[i].usuarioAsignado === usr){
                 //Para traer misReportes deben estar asignados a mi y tener estado asignado
                 //A mis reportes les pondre un campo para poner como solucione el problema y un boton para guardar los cambios
-                
+                conteFaqs.appendChild(divDuda);
                 divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
                 
                 var txtSolucion = document.createElement("input");
@@ -117,12 +127,16 @@ class Soporte{
                 conteFaqs.insertBefore(btnGSolucion, txtSolucion.nextSibling);
                 
             }else
-                if((arrayDuda[i].estado === "Solucionado" && "Gerente de Soporte" === usr) || (arrayDuda[i].etiqueta === est && usr === "Gerente de Soporte" && arrayDuda[i].estado === "Solucionado")){
+                if((arrayDuda[i].estado === "Solucionado" && "Gerente de Soporte" === usr && arrayDuda[i].etiqueta === "Soporte")){
                     //Siendo gerente de sopote puedo traigo los reportes solucionados para cerrarlos
+                    //BOTON REPORTES POR VALIDAR
                     //para aceptar o rechazar la solucion pongo 2 botones
                     //la segunda validacion, es decir despues del || es para tickets
-                    
+                    var divSolu = document.createElement("div");
+                    conteFaqs.appendChild(divDuda);
+                    conteFaqs.appendChild(divSolu);
                     divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                    divSolu.innerHTML = "<p>"+arrayDuda[i].respuesta+"</p>";
                     
                     var btnAcepta = document.createElement("input");
                     var btnRechaza = document.createElement("input");
@@ -130,8 +144,8 @@ class Soporte{
                     btnAcepta.type="button";
                     btnRechaza.type="button";
                     
-                    btnAcepta.value="ACEPTAR"
-                    btnRechaza.value="RECHAZAR"
+                    btnAcepta.value="ACEPTAR";
+                    btnRechaza.value="RECHAZAR";
                     
                     btnAcepta.onclick = function(){
                         firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Cerrado");
@@ -141,75 +155,52 @@ class Soporte{
                         firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
                     };
                     
-                    conteFaqs.insertBefore(btnAcepta, divDuda.nextSibling);
-                    conteFaqs.insertBefore(btnRechaza, divDuda.nextSibling);
+                    conteFaqs.insertBefore(btnAcepta, divSolu.nextSibling);
+                    conteFaqs.insertBefore(btnRechaza, divSolu.nextSibling);
                     
                 }else
                     if(usr === "operador"){
-                        
+                        //BOTON PARA CREAR NUEVO REPORTE
+                        conteFaqs.appendChild(divDuda);
                         divDuda.innerHTML = "<p>"+arrayDuda[i].duda+"</p>";
                         
-                        //----------------TRAYENDO CAMPOS PARA REPORTE--------------------
-                        var txtEstado = document.getElementById("txtEstado");
-                        var txtDuda = document.getElementById("txtDuda");
-                        var txtIdUsuario = document.getElementById("txtIdUsuario");
-                        var txtRespuesta = document.getElementById("txtRespuesta");
-                        var txtEncargado = document.getElementById("txtEncargado");
-                        var txtReporte = document.getElementById("txtReporte");
-                        var btnGuardaReporte = document.getElementById("btnGuardaReporte");
-                        //----------------------------------------------------------------
-                        
-                        //-----EVENTO ON CLICK A DIV-----
-                            divDuda.addEventListener("click", function(){
-                                txtEstado.disabled = true;
-                                txtDuda.value = arrayDuda[i].duda;
-                                txtDuda.disabled = true;
-                                txtIdUsuario.value = arrayDuda[i].idUsuario;
-                                txtIdUsuario.disabled = true;
-                                txtRespuesta.disabled = true;
-                                txtEncargado.disabled = true;
-
-                                btnGuardaReporte.onclick = function(){
-                                    soporte.abreReporte(arrayDuda[i].id, txtReporte.value, "Soporte");
-                                };
+                        divDuda.addEventListener("click", function(){
+                            soporte.abreReporte(arrayDuda[i].id, "Soporte", arrayDuda[i].duda, arrayDuda[i].idUsuario);
+                        });
                                 
-                            });
-                        //-------------------------------
-                        
                     }else
-                        if(arrayDuda[i].usuarioAsignado === undefined && "Gerente de Soporte" === usr){
-                            //Siendo gerente de sopote puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno
-                            //para asignarlos pongo botones con el nombre de los ingenieros, mas un boton para asignarmelo a mi
-                            //tambien pongo un boton para enviarlo como ticket a mantenimiento
-                            
+                        if(usr === "Gerente de Soporte" && arrayDuda[i].usuarioAsignado === undefined && arrayDuda[i].estado === "Abierto"){
+                            //Siendo gerente de soporte traigo los reportes que no tienen ingeniero asignado para asignarles uno, asignarmelos a mi o mandarlo a mantenimiento
+                            //BOTON REPORTES
+                            conteFaqs.appendChild(divDuda);
                             divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
                             
-                            var btnProgUno = document.createElement("input");
-                            var btnProgDos = document.createElement("input");
-                            var btnProgTres = document.createElement("input");
+                            var btnUno = document.createElement("input");
+                            var btnDos = document.createElement("input");
+                            var btnTres = document.createElement("input");
                             var btnYo = document.createElement("input");
                             var btnMantenimiento = document.createElement("input");
                             
-                            btnProgUno.type = "button";
-                            btnProgDos.type = "button";
-                            btnProgTres.type = "button";
+                            btnUno.type = "button";
+                            btnDos.type = "button";
+                            btnTres.type = "button";
                             btnYo.type = "button";
                             btnMantenimiento.type = "button";
                             
-                            btnProgUno.value = "AYLIN";
-                            btnProgDos.value = "CAROLINA";
-                            btnProgTres.value = "LUCIA";
+                            btnUno.value = "AYLIN";
+                            btnDos.value = "CAROLINA";
+                            btnTres.value = "LUCIA";
                             btnYo.value = "YO";
                             btnMantenimiento.value = "MANTENIMIENTO";
                             
                             //-----EVENTO ON CLICK A BOTONES-----
-                                btnProgUno.addEventListener("click", function(){
+                                btnUno.addEventListener("click", function(){
                                     soporte.asignaUsuario(arrayDuda[i].id, "aylin@kep.com");
                                 });
-                                btnProgDos.addEventListener("click", function(){
+                                btnDos.addEventListener("click", function(){
                                     soporte.asignaUsuario(arrayDuda[i].id, "carolina@kep.com");
                                 });
-                                btnProgTres.addEventListener("click", function(){
+                                btnTres.addEventListener("click", function(){
                                     soporte.asignaUsuario(arrayDuda[i].id, "lucia@kep.com");
                                 });
                                 btnYo.addEventListener("click", function(){
@@ -220,14 +211,55 @@ class Soporte{
                                 });
                             //-------------------------------
                             
-                            conteFaqs.appendChild(btnProgUno);
-                            conteFaqs.appendChild(btnProgDos);
-                            conteFaqs.appendChild(btnProgTres);
+                            conteFaqs.appendChild(btnUno);
+                            conteFaqs.appendChild(btnDos);
+                            conteFaqs.appendChild(btnTres);
                             conteFaqs.appendChild(btnYo);
                             conteFaqs.appendChild(btnMantenimiento);
                         }else
+                            if(arrayDuda[i].estado === est && usr === "No importa"){
+                                var divExpe = document.createElement("div");
+                                divExpe.innerHTML = "<p> duda: "+arrayDuda[i].duda+"</p>"+
+                                                    "<p> estado: "+arrayDuda[i].estado+"</p>"+
+                                                    "<p> etiqueta: "+arrayDuda[i].etiqueta+"</p>"+
+                                                    "<p> idUsuario: "+arrayDuda[i].idUsuario+"</p>"+
+                                                    "<p> reporte: "+arrayDuda[i].reporte+"</p>"+
+                                                    "<p> respuesta: "+arrayDuda[i].respuesta+"</p>"+
+                                                    "<p> usuarioAsignado: "+arrayDuda[i].usuarioAsignado+"</p>";
+                                conteFaqs.appendChild(divExpe);                                    
+                            }
                             if(arrayDuda[i].etiqueta === est && usr === "Gerente de Soporte"){
-                                divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                                var divExpe = document.createElement("div");
+                                divExpe.innerHTML = "<p> duda: "+arrayDuda[i].duda+"</p>"+
+                                                    "<p> estado: "+arrayDuda[i].estado+"</p>"+
+                                                    "<p> etiqueta: "+arrayDuda[i].etiqueta+"</p>"+
+                                                    "<p> idUsuario: "+arrayDuda[i].idUsuario+"</p>"+
+                                                    "<p> reporte: "+arrayDuda[i].reporte+"</p>"+
+                                                    "<p> respuesta: "+arrayDuda[i].respuesta+"</p>"+
+                                                    "<p> usuarioAsignado: "+arrayDuda[i].usuarioAsignado+"</p>";
+                                conteFaqs.appendChild(divExpe);
+                                
+                                if(arrayDuda[i].estado === "Solucionado"){
+                                    var btnAcepta = document.createElement("input");
+                                    var btnRechaza = document.createElement("input");
+
+                                    btnAcepta.type="button";
+                                    btnRechaza.type="button";
+
+                                    btnAcepta.value="ACEPTAR";
+                                    btnRechaza.value="RECHAZAR";
+
+                                    btnAcepta.onclick = function(){
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Cerrado");
+                                    };
+
+                                    btnRechaza.onclick = function(){
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
+                                    };
+
+                                    conteFaqs.insertBefore(btnAcepta, divExpe.nextSibling);
+                                    conteFaqs.insertBefore(btnRechaza, divExpe.nextSibling);
+                                }
                             }
         }
    }
@@ -237,10 +269,44 @@ class Soporte{
         firebase.database().ref("Buzon/"+id+"/estado").set("Solucionado");
     }
     
-    abreReporte(id, reporte, etiqueta){
-        firebase.database().ref("Buzon/"+id+"/reporte").set(reporte);
-        firebase.database().ref("Buzon/"+id+"/estado").set("Abierto");
-        firebase.database().ref("Buzon/"+id+"/etiqueta").set(etiqueta);
+    abreReporte(id, etiqueta, duda, idUsr){
+        //----------------TRAYENDO CAMPOS PARA REPORTE--------------------
+            var txtEstado = document.getElementById("txtEstado");
+            var txtDuda = document.getElementById("txtDuda");
+            var txtIdUsuario = document.getElementById("txtIdUsuario");
+            var txtRespuesta = document.getElementById("txtRespuesta");
+            var txtEncargado = document.getElementById("txtEncargado");
+            var txtReporte = document.getElementById("txtReporte");
+            var btnGuardaReporte = document.getElementById("btnGuardaReporte");
+        //----------------------------------------------------------------
+        
+            txtEstado.disabled = true;
+            txtDuda.value = duda;
+            txtDuda.disabled = true;
+            txtIdUsuario.value = idUsr;
+            txtIdUsuario.disabled = true;
+            txtRespuesta.disabled = true;
+            txtEncargado.disabled = true;
+            btnGuardaReporte.disabled = false;
+            txtReporte.disabled = false;
+            
+            btnGuardaReporte.onclick = function(){
+                console.log("El id fue: "+id);
+                firebase.database().ref("Buzon/"+id+"/reporte").set(txtReporte.value);
+                firebase.database().ref("Buzon/"+id+"/estado").set("Abierto");
+                firebase.database().ref("Buzon/"+id+"/etiqueta").set(etiqueta);
+                
+                txtEstado.value = "";
+                txtDuda.value = "";
+                txtIdUsuario.value = "";
+                txtRespuesta.value = "";
+                txtEncargado.value = "";
+                txtReporte.value = "";
+                btnGuardaReporte.disabled = true;
+                txtReporte.disabled = true;
+                
+                btnGuardaReporte.onclick = null;
+            };
     }
     
     asignaUsuario(id, usr){
@@ -260,40 +326,46 @@ class Soporte{
     }
     
     traeMisReportes(){
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                var soporte = new Soporte();
-                soporte.traeDudas(user.email, "Asignado"); 
-            }else
-                alert("Usuario no reconocido");
-        });
+        var user = firebase.auth().currentUser;
+        if (user) {
+            console.log("traigo mis viajes: "+user.email);
+            var soporte = new Soporte();
+            soporte.traeDudas(user.email, "Asignado"); 
+        } else {
+            console.log("No soy nadie :(");
+        }
     }
     
     traeReportesAbiertos(){
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                var soporte = new Soporte();
+        var user = firebase.auth().currentUser;
+        if (user) {
+            var soporte = new Soporte();
                 if(user.email === "gerente_soporte@kep.com"){
                     soporte.traeDudas("Gerente de Soporte", "Abierto");
+                    console.log("K HACE");
                 }
-            }else
-                //El usuario no esta autentificado
-                alert("Usuario no reconocido");
-        });
+        } else {
+            console.log("No soy nadie :(");
+        }
     }
     
     traeTickets(){
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                console.log("Hay: "+user.email);
+        var user = firebase.auth().currentUser;
+        if (user) {
+            console.log("Hay: "+user.email);
                 if(user.email === "gerente_soporte@kep.com"){
                     console.log("Hay x2");
                     var soporte = new Soporte();
                     soporte.traeDudas("Gerente de Soporte", "Ticket");
                 }
-            }else
-                alert("Usuario no reconocido");
-        });
+        } else {
+            console.log("No soy nadie :(");
+        }
+    }
+    
+    traeExpediente(){
+        var soporte = new Soporte();
+        soporte.traeDudas("No importa", "Cerrado");
     }
     
 }

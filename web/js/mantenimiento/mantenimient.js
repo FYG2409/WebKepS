@@ -15,7 +15,12 @@ class Mantenimiento{
                         etiqueta: "Mantenimiento",
                         reporte: txtReporte.value
                     });
-                });
+                }).then(refDoc =>{
+                    alert("Registro Exitoso");
+                }).catch(error=>{
+                    alert("Algo fallo");
+                    console.log("mantenimiento: "+error);
+                });;
             }else
                 alert("Usuario no reconocido");
         });
@@ -33,7 +38,7 @@ class Mantenimiento{
     }
     
     traeDudas(usr, estado){
-        
+        firebase.database().ref("Buzon").off();
         console.log("traeDudas: "+" usuario: " +usr+" estado: "+estado);
         
         let mantenimiento = new Mantenimiento();
@@ -50,12 +55,14 @@ class Mantenimiento{
                 
                 var dudaObj = {
                     id: duda.key,
-                    reporte: newDuda.reporte,
-                    idUsuario: newDuda.idUsuario,
-                    usuarioAsignado: newDuda.usuarioAsignado,
+                    duda: newDuda.duda,
                     estado: newDuda.estado,
-                    etiqueta: newDuda.etiqueta
-                  };
+                    etiqueta: newDuda.etiqueta,
+                    idUsuario: newDuda.idUsuario,
+                    reporte: newDuda.reporte,
+                    respuesta: newDuda.respuesta,
+                    usuarioAsignado: newDuda.usuarioAsignado
+                };
                   
                     if(!(dudaObj.reporte === undefined)){
                         //los de mantenimiento (gerente y programador) reciben las dudas con un reporte definido 
@@ -76,6 +83,11 @@ class Mantenimiento{
                             //Esto es para tickets
                             arrayDudas.push(dudaObj);
                         }
+                        if(dudaObj.estado === "Cerrado" && usr === "No importa"){
+                            console.log("d");
+                            alert("d");
+                            arrayDudas.push(dudaObj);
+                        }
            });
            
            mantenimiento.imprimeDudas(arrayDudas, usr, estado);
@@ -92,10 +104,6 @@ class Mantenimiento{
     }
     
     imprimeDudas(array, usr, est){
-        console.log("gyf "+est);
-        console.log("fyg "+usr);
-        console.log("hol");
-        console.log(array);
         
         var arrayDuda = array;
         let mantenimiento = new Mantenimiento();
@@ -123,13 +131,11 @@ class Mantenimiento{
                 bande = bande + noSumar;
             //--------------------------------
             
-            conteFaqs.appendChild(divDuda);
-            
             
             if(arrayDuda[i].estado === "Mantenimiento" && arrayDuda[i].usuarioAsignado === usr){
                 //Para traer misReportes deben estar asignados a mi y tener estado matenimiento
                 //A mis reportes les pondre un campo para poner como solucione el problema y un boton para guardar los cambios
-                
+                conteFaqs.appendChild(divDuda);
                 divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
                 
                 
@@ -156,8 +162,11 @@ class Mantenimiento{
                 if(arrayDuda[i].estado === "En Proceso" && "Gerente de Mantenimiento" === usr){
                     //Siendo gerente de mantenimiento puedo traigo los reportes con estado en proceso-solucionado(terminar)
                     //para aceptar o rechazar la solucion pongo 2 botones
-                    
+                    var divSolu = document.createElement("div");
+                    conteFaqs.appendChild(divDuda);
+                    conteFaqs.appendChild(divSolu);
                     divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
+                    divSolu.innerHTML = "<p>"+arrayDuda[i].respuesta+"</p>";
                     
                     var btnAcepta = document.createElement("input");
                     var btnRechaza = document.createElement("input");
@@ -165,8 +174,8 @@ class Mantenimiento{
                     btnAcepta.type="button";
                     btnRechaza.type="button";
                     
-                    btnAcepta.value="ACEPTAR"
-                    btnRechaza.value="RECHAZAR"
+                    btnAcepta.value="ACEPTAR";
+                    btnRechaza.value="RECHAZAR";
                     
                     btnAcepta.onclick = function(){
                         firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Solucionado");
@@ -176,14 +185,14 @@ class Mantenimiento{
                         firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento");
                     };
                     
-                    conteFaqs.insertBefore(btnAcepta, divDuda.nextSibling);
-                    conteFaqs.insertBefore(btnRechaza, divDuda.nextSibling);
+                    conteFaqs.insertBefore(btnAcepta, divSolu.nextSibling);
+                    conteFaqs.insertBefore(btnRechaza, divSolu.nextSibling);
                     
                 }else
                     if(arrayDuda[i].usuarioAsignado === undefined && "Gerente de Mantenimiento" === usr){
                         //Siendo gerente de mantenimiento puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno cambiando tambien el estado a mantenimiento
                         //para asignarlos pongo botones con el nombre de los programadores, mas un boton para asignarmelo a mi
-
+                        conteFaqs.appendChild(divDuda);
                         divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
 
                         var btnProgUno = document.createElement("input");
@@ -225,6 +234,7 @@ class Mantenimiento{
                             //Siendo gerente de mantenimiento puedo traigo los reportes que no tienen ingenierosAsignador para asignarles uno cambiando tambien el estado a mantenimiento
                             //para asignarlos pongo botones con el nombre de los programadores, mas un boton para asignarmelo a mi
                             //esto es para tickets
+                            conteFaqs.appendChild(divDuda);
                             divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
 
                             var btnProgUno = document.createElement("input");
@@ -261,7 +271,18 @@ class Mantenimiento{
                             conteFaqs.appendChild(btnProgDos);
                             conteFaqs.appendChild(btnProgTres);
                             conteFaqs.appendChild(btnYo);
-                        }
+                        }else
+                            if(arrayDuda[i].estado === est && usr === "No importa"){
+                                    var divExpe = document.createElement("div");
+                                        divExpe.innerHTML = "<p> duda: "+arrayDuda[i].duda+"</p>"+
+                                                            "<p> estado: "+arrayDuda[i].estado+"</p>"+
+                                                            "<p> etiqueta: "+arrayDuda[i].etiqueta+"</p>"+
+                                                            "<p> idUsuario: "+arrayDuda[i].idUsuario+"</p>"+
+                                                            "<p> reporte: "+arrayDuda[i].reporte+"</p>"+
+                                                            "<p> respuesta: "+arrayDuda[i].respuesta+"</p>"+
+                                                            "<p> usuarioAsignado: "+arrayDuda[i].usuarioAsignado+"</p>";
+                                        conteFaqs.appendChild(divExpe);                                    
+                                    }
                     
         }
    }
@@ -306,5 +327,10 @@ class Mantenimiento{
                 //El usuario no esta autentificado
                 alert("Usuario no reconocido");
         });
+    }
+    
+    traeExpediente(){
+        var mantenimiento = new Mantenimiento();
+        mantenimiento.traeDudas("No importa", "Cerrado");
     }
 }

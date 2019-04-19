@@ -1,19 +1,16 @@
 btnMisReportes = document.getElementById("btnMisReportes");
 btnReportes = document.getElementById("btnReportes");
 btnPorValidar = document.getElementById("btnPorValidar");
-bodyGerenteS = document.getElementById("bodyGerenteS");
-bodyOperadorS = document.getElementById("bodyOperadorS");
-bodyIngenieroS = document.getElementById("bodyIngenieroS");
 btnTickets = document.getElementById("btnTickets");
+btnExpediente = document.getElementById("btnExpediente");
+btnReportesO = document.getElementById("btnReportesO");
 
 
-
-if(!(bodyGerenteS === null)){
-    bodyGerenteS.onload = function(){
+if(!(btnReportesO === null)){
+    btnReportesO.addEventListener("click", function(){
         var soporte = new Soporte();
-        soporte.traeReportesAbiertos();
-        //aqui
-    };
+        soporte.traeDudas("operador");
+    });
 }
 
 if(!(btnMisReportes === null)){
@@ -26,16 +23,8 @@ if(!(btnMisReportes === null)){
 if(!(btnReportes === null)){
     btnReportes.addEventListener("click", function(){
         var soporte = new Soporte();
-       soporte.traeReportesAbiertos();
-       //aqui
+        soporte.traeReportesAbiertos();
     });
-}
-
-if(!(bodyOperadorS === null)){
-    bodyOperadorS.onload = function(){
-       var soporte = new Soporte();
-       soporte.traeDudas("operador");
-    };
 }
 
 if(!(btnPorValidar === null)){
@@ -45,19 +34,17 @@ if(!(btnPorValidar === null)){
     });
 }
 
-if(!(bodyIngenieroS === null)){
-    bodyIngenieroS.onload = function(){
-        var soporte = new Soporte();
-        soporte.traeMisReportes();
-    };
-}
-
 if(!(btnTickets === null)){
     btnTickets.addEventListener("click", function(){
-        console.log("Entre a tickets");
         var soporte = new Soporte();
         soporte.traeTickets();
     });
 }
 
+if(!(btnExpediente === null)){
+    btnExpediente.addEventListener("click", function(){
+        var soporte = new Soporte();
+        soporte.traeExpediente();
+    });
+}
 
