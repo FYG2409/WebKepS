@@ -4,11 +4,13 @@ class Mantenimiento{
         
         var txtReporte = document.getElementById("txtReporte");
         
-        firebase.auth().onAuthStateChanged(user =>{
+        if(txtReporte.value === ""){
+            alert("Escribe un reporte");
+        }else{
+            firebase.auth().onAuthStateChanged(user =>{
             if(user){
                 firebase.database().ref("Buzon/").once('value', function(snapshot) {
                     var xId = snapshot.numChildren() + 1; 
-                    console.log("index: " +xId);
                     firebase.database().ref("Buzon/"+xId).set({
                         estado: "Abierto",
                         idUsuario: user.email,                    
@@ -19,27 +21,27 @@ class Mantenimiento{
                     alert("Registro Exitoso");
                 }).catch(error=>{
                     alert("Algo fallo");
-                    console.log("mantenimiento: "+error);
-                });;
+                    console.log("mantenimiento.js | guardaReporte: "+error);
+                });
             }else
                 alert("Usuario no reconocido");
-        });
+            });
+        }
         
     }
     
     traeMisReportes(){
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                var mantenimiento = new Mantenimiento();
-                mantenimiento.traeDudas(user.email, "Mantenimiento"); 
-            }else
-                alert("Usuario no reconocido");
-        });
+        var user = firebase.auth().currentUser;
+        if (user) {
+            var mantenimiento = new Mantenimiento();
+            mantenimiento.traeDudas(user.email, "Mantenimiento"); 
+        } else {
+            console.log("mantenimiento.js | traeMisReportes: "+"No existe el usuario");
+        }
     }
     
     traeDudas(usr, estado){
         firebase.database().ref("Buzon").off();
-        console.log("traeDudas: "+" usuario: " +usr+" estado: "+estado);
         
         let mantenimiento = new Mantenimiento();
         var arrayDudas = [];
@@ -67,25 +69,20 @@ class Mantenimiento{
                     if(!(dudaObj.reporte === undefined)){
                         //los de mantenimiento (gerente y programador) reciben las dudas con un reporte definido 
                             if(dudaObj.estado === "Mantenimiento" && dudaObj.usuarioAsignado === usr){
-                                alert("UNO");
                                 //Para traer misReportes deben estar asignados a mi y tener estado matenimiento
                                 arrayDudas.push(dudaObj);
                             }else
                                 if(dudaObj.estado === estado && usr === "Gerente de Mantenimiento" && !(dudaObj.etiqueta === "Soporte")){
-                                    alert("DOS");
                                     //Siendo gerente de mantenimiento puedo traer los reportes con estado abierto-mantenimiento(asigno), en proceso-solucionado(terminar)
                                     arrayDudas.push(dudaObj);
                                 }
                     }else
                         if(dudaObj.etiqueta === "Ticket" && dudaObj.estado === estado && usr === "Gerente de Mantenimiento"){
-                            alert("TRES");
                             //si viene de soporte y el usuario asignado es mantenimiento
                             //Esto es para tickets
                             arrayDudas.push(dudaObj);
                         }
                         if(dudaObj.estado === "Cerrado" && usr === "No importa"){
-                            console.log("d");
-                            alert("d");
                             arrayDudas.push(dudaObj);
                         }
            });
@@ -93,7 +90,7 @@ class Mantenimiento{
            mantenimiento.imprimeDudas(arrayDudas, usr, estado);
            
         }, function (errorObject) {
-          console.log("The read failed: " + errorObject.code);
+            console.log("mantenimiento.js | traeDudas: "+errorObject.code);
         });
     }
     
@@ -109,14 +106,15 @@ class Mantenimiento{
         let mantenimiento = new Mantenimiento();
         
         //-------------DISEÑO-------------
+        
         var totalRegistros = arrayDuda.length;
         var noSumar;
         if(totalRegistros === 1 || totalRegistros === 0){
             noSumar = 0;
         }else{
-            noSumar = 130/(totalRegistros-1);
+            noSumar = 132/(totalRegistros-1);
         }
-        var bande = 12;
+        var bande = 0;
         //--------------------------------
         
         for(let i = 0; i<arrayDuda.length; i++){
@@ -125,8 +123,8 @@ class Mantenimiento{
             var divDuda = document.createElement("div");
             
             //-------------DISEÑO-------------
-                divDuda.style.border = "rgb("+bande+",144,12) 3px solid";
-                divDuda.style.backgroundColor = "rgba("+bande+",144,12,0.66)";
+                divDuda.style.border = "rgb("+bande+",0,132) 3px solid";
+                divDuda.style.backgroundColor = "rgba("+bande+",0,132,0.66)";
                 
                 bande = bande + noSumar;
             //--------------------------------
@@ -138,10 +136,8 @@ class Mantenimiento{
                 conteFaqs.appendChild(divDuda);
                 divDuda.innerHTML = "<p>"+arrayDuda[i].reporte+"</p>";
                 
-                
                 var txtSolucion = document.createElement("input");
                 var btnGSolucion = document.createElement("input");
-                
                 
                 txtSolucion.type="text";
                 btnGSolucion.type="button";
@@ -178,11 +174,15 @@ class Mantenimiento{
                     btnRechaza.value="RECHAZAR";
                     
                     btnAcepta.onclick = function(){
-                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Solucionado");
+                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Solucionado").catch(error =>{
+                            console.log("mantenimiento.js | imprimeDudas: "+error);
+                        });
                     };
                     
                     btnRechaza.onclick = function(){
-                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento");
+                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Mantenimiento").catch(error =>{
+                            console.log("mantenimiento.js | imprimeDudas: "+error);
+                        });
                     };
                     
                     conteFaqs.insertBefore(btnAcepta, divSolu.nextSibling);
@@ -288,8 +288,12 @@ class Mantenimiento{
    }
    
     modificaEnProceso(id, solucion){
-        firebase.database().ref("Buzon/"+id+"/respuesta").set(solucion.value);
-        firebase.database().ref("Buzon/"+id+"/estado").set("En Proceso");
+        if(solucion.value === ""){
+            alert("Escribe como solucionaste el problema");
+        }else{
+            firebase.database().ref("Buzon/"+id+"/respuesta").set(solucion.value);
+            firebase.database().ref("Buzon/"+id+"/estado").set("En Proceso");
+        }
     }
     
     abreReporte(id, reporte, etiqueta){
@@ -304,29 +308,27 @@ class Mantenimiento{
     }
     
     traeReportesAbiertos(){
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                var mantenimiento = new Mantenimiento();
-                if(user.email === "gerente_mantenimiento@kep.com"){
-                    mantenimiento.traeDudas("Gerente de Mantenimiento", "Abierto");
-                }
-            }else
-                //El usuario no esta autentificado
-                alert("Usuario no reconocido");
-        });
+        var user = firebase.auth().currentUser;
+        if (user) {
+            var mantenimiento = new Mantenimiento();
+            if(user.email === "gerente_mantenimiento@kep.com"){
+                mantenimiento.traeDudas("Gerente de Mantenimiento", "Abierto");
+            }
+        } else {
+            console.log("mantenimiento.js | traeMisReportes: "+"No existe el usuario");
+        }
     }
     
     traeTickets(){
-        firebase.auth().onAuthStateChanged(user =>{
-            if(user){
-                var mantenimiento = new Mantenimiento();
-                if(user.email === "gerente_mantenimiento@kep.com"){
-                    mantenimiento.traeDudas("Gerente de Mantenimiento", "Asignado");
-                }
-            }else
-                //El usuario no esta autentificado
-                alert("Usuario no reconocido");
-        });
+        var user = firebase.auth().currentUser;
+        if (user) {
+            var mantenimiento = new Mantenimiento();
+            if(user.email === "gerente_mantenimiento@kep.com"){
+                mantenimiento.traeDudas("Gerente de Mantenimiento", "Asignado");
+            }
+        } else {
+            console.log("mantenimiento.js | traeMisReportes: "+"No existe el usuario");
+        }
     }
     
     traeExpediente(){

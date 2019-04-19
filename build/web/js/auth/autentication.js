@@ -1,14 +1,14 @@
 class Autenticacion{
+    
     authEmailPass(email,password){
         
     }
     
     iniciaSesion(email, password){
         firebase.auth().signInWithEmailAndPassword(email, password).then(result =>{
-            alert("Sesion Iniciada");
             redirige(email);
         }).catch(error =>{
-            console.log("autenticacion.js: "+error);
+            console.log("autenticacion.js | iniciaSesion: "+error);
         });
     }
     
@@ -19,9 +19,9 @@ class Autenticacion{
             return firebase.auth().signOut().then(() =>{
                 alert("Sesion Cerrada");
             }).catch(error =>{
-               console.log("general.js: "+error); 
+               console.log("autenticacion.js | cerrarSesion: "+error);
             });
         }
-    }
+    }   
     
 }

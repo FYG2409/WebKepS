@@ -1,17 +1,16 @@
 class Faq{
     
-   imprimePreguntas(array){
+    imprimePreguntas(array){
         var arrayFaq = [];
         arrayFaq = array;
         var totalRegistros = arrayFaq.length;
-        console.log("tamaño: "+arrayFaq.length);
         var noSumar;
         if(totalRegistros === 1 || totalRegistros === 0){
             noSumar = 0;
         }else{
-            noSumar = 130/(totalRegistros-1);
+            noSumar = 132/(totalRegistros-1);
         }
-        var bande = 12;
+        var bande = 0;
 
         for(let i = 0; i<arrayFaq.length; i++){
             //aquí
@@ -33,8 +32,8 @@ class Faq{
             
             
             //-------------DISEÑO-------------
-                divPregunta.style.border = "rgb("+bande+",144,12) 3px solid";
-                divPregunta.style.backgroundColor = "rgba("+bande+",144,12,0.66)";
+                divPregunta.style.border = "rgb("+bande+",0,132) 3px solid";
+                divPregunta.style.backgroundColor = "rgba("+bande+",0,132,0.66)";
                 
                 bande = bande + noSumar;
             //--------------------------------
@@ -62,16 +61,16 @@ class Faq{
             
    }
    
-   borraPregunta(id){
+    borraPregunta(id){
        firebase.database().ref("FAQS/"+id).remove().catch(error =>{
-            console.log("faq.js: "+error);
+            console.log("faq.js | borraPregunta: "+error);
         });
    }
    
     traePreguntas(){
         let faq = new Faq();
-        console.log("entre");
         var arrayFaq = [];
+        firebase.database().ref("FAQS").off();
         firebase.database().ref("FAQS").on("value", function(querySnapshot) {
           faq.limpiar();
           arrayFaq = [];
@@ -89,7 +88,7 @@ class Faq{
            faq.imprimePreguntas(arrayFaq);
            return arrayFaq;
         }, function (errorObject) {
-          console.log("The read failed: " + errorObject.code);
+            console.log("faq.js | traePreguntas: "+errorObject.code);
         });
             return arrayFaq;
     }
@@ -100,13 +99,24 @@ class Faq{
         d.removeChild(d.firstChild);
     }
     
-    guardaPregunta(txtnuevaPregunta, txtnuevaRespuesta){
-        var xId = firebase.database().ref("FAQS/").push().getKey();
-        firebase.database().ref("FAQS/"+xId).set({
-            idPregunta: xId,
-            pregunta: txtnuevaPregunta,
-            respuesta: txtnuevaRespuesta
-        });
+    guardaPregunta(){
+        var txtnuevaPregunta = document.getElementById("txtnuevaPregunta").value;
+        var txtnuevaRespuesta = document.getElementById("txtnuevaRespuesta").value;
+        if(txtnuevaPregunta === "" || txtnuevaRespuesta === ""){
+            alert("Tienes un campo vacio");
+        }else{
+            var xId = firebase.database().ref("FAQS/").push().getKey();
+            firebase.database().ref("FAQS/"+xId).set({
+                idPregunta: xId,
+                pregunta: txtnuevaPregunta,
+                respuesta: txtnuevaRespuesta
+            }).then(refDoc =>{
+                alert("Registro Exitoso");
+            }).catch(error=>{
+                alert("Algo fallo");
+                console.log("faq.js | guardaPregunta: "+error);
+            });
+        }
     }
     
     cambiaVistaModificar(id, index, pregunta, respuesta){
@@ -146,6 +156,9 @@ class Faq{
             idPregunta: id,
             pregunta: pregunta,
             respuesta: respuesta
+        }).catch(error=>{
+            alert("Algo fallo");
+            console.log("faq.js | modificaPregunta: "+error);
         });
     }
 }

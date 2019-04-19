@@ -6,7 +6,6 @@ class Soporte{
         var arrayDudas = [];
         
         firebase.database().ref("Buzon").on("value", function(querySnapshot) {
-          console.log("traeDudas: "+" usuario: " +usr+" estado: "+estado);
           soporte.limpiar();
           arrayDudas = [];
           
@@ -24,57 +23,41 @@ class Soporte{
                     respuesta: newDuda.respuesta,
                     usuarioAsignado: newDuda.usuarioAsignado
                   };
-                  
-                  console.log(dudaObj.estado +"   "+usr);
-                  
+                                    
                     if(dudaObj.etiqueta === "Soporte" && !(dudaObj.reporte === undefined)){
                         //los de soporte (gerente e ingeniero) reciben las dudas con un reporte definido por el operador
                             if(dudaObj.estado === estado && dudaObj.usuarioAsignado === usr){
-                                console.log("c");
-                                alert("c");
                                 //Para traer misReportes deben estar asignados a mi y tener estado asignado
                                 arrayDudas.push(dudaObj);
                             }else
                                 if(dudaObj.estado === estado && usr === "Gerente de Soporte"){
-                                    alert("a");
-                                    console.log("a");
                                     //Siendo gerente de sopote puedo traer los reportes con estado abierto parar asignarlo y solucionado para cerrarlo
                                     arrayDudas.push(dudaObj);
                                 }
                     }else
                         if(dudaObj.etiqueta === estado && usr === "Gerente de Soporte" && !(dudaObj.estado === "Cerrado")){
-                            alert("b");
-                            console.log("b");
                             //si viene de soporte y el usuario asignado es mantenimiento
                             //Esto es para tickets
                             arrayDudas.push(dudaObj);
                         }
                         if(dudaObj.estado === undefined && usr === "operador" ){
-                            console.log("e");
                             //los operadores reciben los reportes sin estado, ya que ellos abren el reporte
                             arrayDudas.push(dudaObj);
                         }
                         if(dudaObj.estado === "Cerrado" && usr === "No importa"){
-                            console.log("d");
-                            alert("d");
                             arrayDudas.push(dudaObj);
                         }
                   
-           });
+            });
            
-           soporte.imprimeDudas(arrayDudas, usr, estado);
-           console.log("array");
-           console.log(arrayDudas);
+            soporte.imprimeDudas(arrayDudas, usr, estado);
            
         }, function (errorObject) {
-          console.log("The read failed: " + errorObject.code);
+            console.log("soporte.js | traeDudas: "+errorObject.code);
         });
     }
     
     imprimeDudas(array, usr, est){
-        console.log("estado; "+est);
-        console.log("Hi " + usr);
-        console.log(array);
         var arrayDuda = array;
         let soporte = new Soporte();
         
@@ -84,9 +67,9 @@ class Soporte{
         if(totalRegistros === 1 || totalRegistros === 0){
             noSumar = 0;
         }else{
-            noSumar = 130/(totalRegistros-1);
+            noSumar = 132/(totalRegistros-1);
         }
-        var bande = 12;
+        var bande = 0;
         //--------------------------------
         
         for(let i = 0; i<arrayDuda.length; i++){
@@ -95,8 +78,9 @@ class Soporte{
             var divDuda = document.createElement("div");
             
             //-------------DISEÑO-------------
-                divDuda.style.border = "rgb("+bande+",144,12) 3px solid";
-                divDuda.style.backgroundColor = "rgba("+bande+",144,12,0.66)";
+                
+                divDuda.style.border = "rgb("+bande+",0,132) 3px solid";
+                divDuda.style.backgroundColor = "rgba("+bande+",0,132,0.66)";
                 
                 bande = bande + noSumar;
             //--------------------------------
@@ -250,11 +234,15 @@ class Soporte{
                                     btnRechaza.value="RECHAZAR";
 
                                     btnAcepta.onclick = function(){
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Cerrado");
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Cerrado").catch(error =>{
+                                            console.log("soporte.js | imprimeDudas: "+error);
+                                        });
                                     };
 
                                     btnRechaza.onclick = function(){
-                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado");
+                                        firebase.database().ref("Buzon/"+arrayDuda[i].id+"/estado").set("Asignado").catch(error =>{
+                                            console.log("soporte.js | imprimeDudas: "+error);
+                                        });
                                     };
 
                                     conteFaqs.insertBefore(btnAcepta, divExpe.nextSibling);
@@ -265,8 +253,12 @@ class Soporte{
    }
    
     modificaSolucion(id, solucion){
-        firebase.database().ref("Buzon/"+id+"/respuesta").set(solucion.value);
-        firebase.database().ref("Buzon/"+id+"/estado").set("Solucionado");
+        if(solucion.value === ""){
+            alert("Escribe como solucionaste el problema");
+        }else{
+            firebase.database().ref("Buzon/"+id+"/respuesta").set(solucion.value);
+            firebase.database().ref("Buzon/"+id+"/estado").set("Solucionado");
+        }
     }
     
     abreReporte(id, etiqueta, duda, idUsr){
@@ -328,11 +320,10 @@ class Soporte{
     traeMisReportes(){
         var user = firebase.auth().currentUser;
         if (user) {
-            console.log("traigo mis viajes: "+user.email);
             var soporte = new Soporte();
             soporte.traeDudas(user.email, "Asignado"); 
         } else {
-            console.log("No soy nadie :(");
+            console.log("soporte.js | traeMisReportes: "+"No existe el usuario");
         }
     }
     
@@ -342,24 +333,22 @@ class Soporte{
             var soporte = new Soporte();
                 if(user.email === "gerente_soporte@kep.com"){
                     soporte.traeDudas("Gerente de Soporte", "Abierto");
-                    console.log("K HACE");
                 }
         } else {
-            console.log("No soy nadie :(");
+            console.log("soporte.js | traeReportesAbiertos: "+"No existe el usuario");
         }
     }
     
     traeTickets(){
         var user = firebase.auth().currentUser;
         if (user) {
-            console.log("Hay: "+user.email);
                 if(user.email === "gerente_soporte@kep.com"){
                     console.log("Hay x2");
                     var soporte = new Soporte();
                     soporte.traeDudas("Gerente de Soporte", "Ticket");
                 }
         } else {
-            console.log("No soy nadie :(");
+            console.log("soporte.js | traeTickets: "+"No existe el usuario");
         }
     }
     
