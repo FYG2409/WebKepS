@@ -18,6 +18,7 @@ class Autenticacion{
             //Si la sesion ya esta iniciada
             return firebase.auth().signOut().then(() =>{
                 alert("Sesion Cerrada");
+                window.location.href = "../index.html";
             }).catch(error =>{
                console.log("autenticacion.js | cerrarSesion: "+error);
             });

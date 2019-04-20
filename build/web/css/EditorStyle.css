@@ -1,0 +1,186 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-color: #f2f2f2;
+    font-family: "Electrolize";
+}
+#cabecera{
+    background-color: #00b0f0;
+    padding: 3vh 5vw 3vh 5vw;
+    box-shadow: 0 5px 8px #888888; 
+}
+p{
+    margin: 0;
+    padding: 0;
+}
+#titulo{
+    color: white;
+    font-size: 3em;
+}
+#general{
+    padding: 3vw;
+}
+/*
+#faqs{
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+    font-size: 1.5em;
+    border-radius: 3px;
+    box-shadow: 0 5px 8px #888888; 
+    padding: 1vh;
+}
+#btnAñadir{
+    box-sizing: border-box;
+    font-size: .8em;
+    color: white;
+    border: none;
+    background-color: #222a35;
+    box-shadow: 0 5px 8px #888888;
+    border-radius: 5px;
+    padding: 1vh;
+}*/
+
+#agregar{
+    background-color: white;
+    color: black;
+    font-size: 1.2em;
+    box-shadow: 0 5px 8px #888888;
+    margin-top: 1vh;
+    border-radius: 5px;
+    margin-bottom: 10vh;
+
+}
+
+#txtnuevaPregunta{
+    box-sizing: border-box;
+    width: 100%;    
+    background-color: white;
+    color: black;
+    font-size: 1.1em;
+    padding: 1.5vh;
+    border: none;
+}
+#txtnuevaRespuesta{
+    box-sizing: border-box;
+    width: 100%;    
+    background-color: white;
+    color: black;
+    font-size: .9em;
+    border: none;
+    padding: 1.5vh;
+}
+#btnGuardaFaq{
+    font-size: .8em;
+    width: 100%;
+    background-color: white;
+    color: #222a35;
+    box-shadow: 0 5px 8px #888888;
+    border-radius: 3px;
+    padding: 1vw;
+    border: #222a35 1.5px solid;
+    -webkit-transition: background-color .5s, color .5s;
+}
+
+#btnGuardaFaq:hover{
+    background-color:#222a35;
+    color: white;
+}
+
+#cabecera input[type=button]{
+    border: none;
+    background-color: #00b0f0;
+    color: white;
+    margin-top: .5em;
+}
+
+#btnFaqs{
+    margin-left: 3em;
+}
+
+#contenedorFaqs{
+    margin-top: 2vh;
+}
+
+.btnBorrar{
+    box-sizing: border-box;
+    width: 100%;
+    font-size: .8em;
+    color: white;
+    border: none;
+    padding: .7vh;
+    background-color: #222a35; 
+    box-shadow: 0 5px 8px #888888;
+    -webkit-transition: color .5s, background-color .5s;
+}
+
+.btnBorrar:hover{
+    background-color: white; 
+    box-shadow: 0 5px 8px #888888;
+    color: black;
+}
+
+hr{
+    margin: 0;
+    border: .5px solid #222a35;
+}
+
+div[id^="conte"]{
+    margin-bottom: 1em;
+}
+
+div[id^="divj"]{
+    margin-bottom: 2vh;
+}
+
+div[id^="divv"] p{
+    margin-top: .5vh;
+    margin-bottom: .5vh;
+    margin-left: 4vw;
+}
+
+
+
+
+.txtNuevaPregunta{
+    box-sizing: border-box;
+    width: 100%;
+    /*background-color: white;*/
+    color: black;
+    font-size: 1.2em;
+    padding: 1vh;
+    border: none;
+}
+
+.txtNuevaRespuesta{
+    box-sizing: border-box;
+    background-color: white;
+    width: 100%;
+    color: black;
+    font-size: 1.1em;
+    padding: 1vh;
+    border: none;
+}
+
+.divPregunta{
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+    font-size: 1.2em;
+    padding: 1vh;
+    /*position:relative;*/
+    color: white;
+}
+
+.divPregunta:hover{
+    -webkit-transform: scale(1.02);
+}
+
+.divRespuesta{
+    box-sizing: border-box;
+    background-color: white;
+    color: black;
+    font-size: 1.1em;
+    padding: 1vh;
+    /*position: absolute;*/
+}

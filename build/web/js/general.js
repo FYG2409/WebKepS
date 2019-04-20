@@ -23,6 +23,6 @@ function traeCurrentUser(){
             return(user.email);
         }else
             //El usuario no esta autentificado
-            console.log("Usuario no reconocido")
+            console.log("Usuario no reconocido");
     });
 }

@@ -1,0 +1,87 @@
+body{
+    padding: 0;
+    margin: 0;
+    font-family: "Electrolize";
+    background-image: url('../recursos/fondo.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    overflow: hidden;
+}
+
+#iniciar{
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, .6);;
+    width: 40vw;
+    height: 60vh;
+    margin: auto;
+    margin-top: 20vh;
+    box-sizing: border-box;
+    padding-top: 6.5vh;
+    border-radius: 5px;
+}
+
+p{
+    margin: 0;
+    padding: 0;
+    height: 10vh;
+    font-size: 10vh;
+    margin-bottom: 5vh;
+}
+
+input[type=button]{
+    box-sizing: border-box;
+    font-size: .8em;
+    width: 30vw;
+    height: 5vh;
+    background-color: #222a35;
+    color: white;
+    box-shadow: 0 5px 8px #888888;
+    border-radius: 3px;
+    border: #222a35 1.5px solid;
+    margin-top: 3vh;
+    -webkit-transition: color .5s, background-color .5s, border .5s;
+}
+
+
+
+input[type=button]:hover{
+    color:#222a35;
+    background-color: white;
+    border: #222a35 1px solid;
+}
+
+input[type=text]{
+    box-sizing: border-box;
+    font-size: .8em;
+    width: 30vw;
+    height: 5vh;
+    padding: 1vh;
+    background-color: white;
+    color: #222a35;
+    box-shadow: 0 5px 8px #888888;
+    border-radius: 3px;
+    border: #222a35 1.5px solid;
+    -webkit-transition: background-color .5s, color .5s;
+    margin-bottom: 3vh;
+}
+
+input[type=password]{
+    box-sizing: border-box;
+    font-size: .8em;
+    width: 30vw;
+    height: 5vh;
+    padding: 1vh;
+    background-color: white;
+    color: #222a35;
+    box-shadow: 0 5px 8px #888888;
+    border-radius: 3px;
+    border: #222a35 1.5px solid;
+    -webkit-transition: background-color .5s, color .5s;
+    margin-bottom: 3vh;
+}
+
+
+
+
