@@ -1,0 +1,33 @@
+#btnMisReportes , #btnReportes , #btnPorValidar , #btnTickets , #btnExpediente
+{
+  color: #affb00 !important;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0.5em 1.2em;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #affb00 ;
+  transition: all 1s ease;
+  position: relative;
+}
+#btnMisReportes:hover, #btnReportes:hover , #btnPorValidar:hover, #btnTickets:hover , #btnExpediente:hover
+{
+  background: #affb00;
+  color: #fff !important;
+}
+
+#BarraN
+{
+    background: #affb00;
+}
+
+input[type=button]
+{
+    text-decoration: none;
+    padding: 10px;
+    color: #ffffff;
+    background-color: #affb00;
+    border: 2px solid #affb00;
+}
+
+

@@ -1,26 +1,32 @@
-<!DOCTYPE html>
 <html>
     <head>
         <title>OPERADOR</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../css/Opera.css" rel="stylesheet" type="text/css"/>
     </head>
     <body id="bodyOperadorS">
-        <div id="botones">
-            <input type="button" id="btnReportesO" value="REPORTES"/>
+        <div id="BarraN">
+             <center><p style="font: condensed 120% sans-serif; color: #ffffff ; font-size: 30px;">O P E R A D O R</p>
+            <br>
+                <input type="button" id="btnReportesO" value="REPORTES"/>
             <input type="button" id="btnExpediente" value="VER EXPEDIENTE"/>
+            <br><br>
+            </center>
         </div>
-        
+        <br>
         <div id="conteReporte">
-            <input type="text" id="txtEstado" placeholder="STATUS" disabled/>
-            <input type="text" id="txtDuda" placeholder="¿QUE REPORTO EL USUARIO?" disabled/>
-            <input type="text" id="txtIdUsuario" placeholder="¿QUIEN LO MANDA?" disabled/>
-            <input type="text" id="txtRespuesta" placeholder="¿COMO SE SOLUCIONO?" disabled/>
-            <input type="text" id="txtEncargado" placeholder="¿QUIEN LO RESOLVIO?" disabled/>
-            <input type="text" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" disabled/>
-            <input type="button" id="btnGuardaReporte" value="GUARDA RESPORTE" disabled/>
+            <center>
+                <input type="text" size="90" id="txtEstado" placeholder="STATUS" disabled/><br>
+                <input type="text" size="90" id="txtDuda" placeholder="¿QUE REPORTO EL USUARIO?" disabled/><br>
+                <input type="text" size="90" id="txtIdUsuario" placeholder="¿QUIEN LO MANDA?" disabled/><br>
+                <input type="text" size="90" id="txtRespuesta" placeholder="¿COMO SE SOLUCIONO?" disabled/><br>
+                <input type="text" size="90" id="txtEncargado" placeholder="¿QUIEN LO RESOLVIO?" disabled/><br>
+                <input type="text" size="90" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" disabled/><br><br>
+                <input type="button" id="btnGuardaReporte" value="GUARDA RESPORTE" disabled/><br>
+            </center>
         </div>
-        
+        <br>
         <div id="contenedorDudas"></div>
         
         
@@ -31,8 +37,7 @@
             <!-- Para database -->
             <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
         <!-- *********  -->
-        
-        
+       
         <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
         <script type="text/javascript" src="../js/general.js"></script>
         <script type="text/javascript" src="../js/soporte/soporte.js"></script>

@@ -203,30 +203,33 @@ class Soporte{
                         }else
                             if(arrayDuda[i].estado === est && usr === "No importa"){
                                 var divExpe = document.createElement("div");
-                                divExpe.innerHTML = "<p> duda: "+arrayDuda[i].duda+"</p>"+
-                                                    "<p> estado: "+arrayDuda[i].estado+"</p>"+
-                                                    "<p> etiqueta: "+arrayDuda[i].etiqueta+"</p>"+
-                                                    "<p> idUsuario: "+arrayDuda[i].idUsuario+"</p>"+
-                                                    "<p> reporte: "+arrayDuda[i].reporte+"</p>"+
-                                                    "<p> respuesta: "+arrayDuda[i].respuesta+"</p>"+
-                                                    "<p> usuarioAsignado: "+arrayDuda[i].usuarioAsignado+"</p>";
+                                divExpe.innerHTML =
+                                                    "<hr style='color:#affb00;'><center>" +
+                                                    "<p> Duda: "+arrayDuda[i].duda+"</p>"+
+                                                    "<p> Estado: "+arrayDuda[i].estado+"</p>"+
+                                                    "<p> Etiqueta: "+arrayDuda[i].etiqueta+"</p>"+
+                                                    "<p> IdUsuario: "+arrayDuda[i].idUsuario+"</p>"+
+                                                    "<p> Reporte: "+arrayDuda[i].reporte+"</p>"+
+                                                    "<p> Respuesta: "+arrayDuda[i].respuesta+"</p>"+
+                                                    "<p> Usuario Asignado: "+arrayDuda[i].usuarioAsignado+"</p></center>";
                                 conteFaqs.appendChild(divExpe);                                    
                             }
                             if(arrayDuda[i].etiqueta === est && usr === "Gerente de Soporte"){
                                 var divExpe = document.createElement("div");
-                                divExpe.innerHTML = "<p> duda: "+arrayDuda[i].duda+"</p>"+
-                                                    "<p> estado: "+arrayDuda[i].estado+"</p>"+
-                                                    "<p> etiqueta: "+arrayDuda[i].etiqueta+"</p>"+
-                                                    "<p> idUsuario: "+arrayDuda[i].idUsuario+"</p>"+
-                                                    "<p> reporte: "+arrayDuda[i].reporte+"</p>"+
-                                                    "<p> respuesta: "+arrayDuda[i].respuesta+"</p>"+
-                                                    "<p> usuarioAsignado: "+arrayDuda[i].usuarioAsignado+"</p>";
+                                divExpe.innerHTML = "<hr style='color: #affb00;'><center>"+
+                                                    "<p> Duda: "+arrayDuda[i].duda+"</p>"+
+                                                    "<p> Estado: "+arrayDuda[i].estado+"</p>"+
+                                                    "<p> Etiqueta: "+arrayDuda[i].etiqueta+"</p>"+
+                                                    "<p> IdUsuario: "+arrayDuda[i].idUsuario+"</p>"+
+                                                    "<p> Reporte: "+arrayDuda[i].reporte+"</p>"+
+                                                    "<p> Respuesta: "+arrayDuda[i].respuesta+"</p>"+
+                                                    "<p> Usuario Asignado: "+arrayDuda[i].usuarioAsignado+"</p></center>";
                                 conteFaqs.appendChild(divExpe);
                                 
                                 if(arrayDuda[i].estado === "Solucionado"){
                                     var btnAcepta = document.createElement("input");
                                     var btnRechaza = document.createElement("input");
-
+S
                                     btnAcepta.type="button";
                                     btnRechaza.type="button";
 
