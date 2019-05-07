@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>PROGRAMADOR</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body id="bodyProgramadorM">
+        
+        <div id="botones">
+            <input type="button" id="btnMisReportes" value="MIS REPORTES"/>
+            <input type="button" id="btnExpediente" value="VER EXPEDIENTE"/>
+            <hr>
+        </div>
+        
+        <div id="reporte">
+            <input type="text" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" />
+            <input type="button" id="btnGuardaReporteM" value="GUARDA REPORTE"/>
+            <hr>
+        </div>
+        
+        <div id="contenedorDudas"></div>
+        
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+        <!-- *********  -->
+        
+        
+        <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="../js/general.js"></script>
+        <script type="text/javascript" src="../js/mantenimiento/mantenimiento.js"></script>
+        <script type="text/javascript" src="../js/mantenimiento/mantenimientoController.js"></script>
+    </body>
+</html>

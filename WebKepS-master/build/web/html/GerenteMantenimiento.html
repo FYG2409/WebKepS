@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GERENTE MANTENIMIENTO</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../css/Mantenimiento.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body id="bodyGerenteM">
+          <div id="cabecera">
+                <p id="titulo">Mantenimiento</p>
+                <div>
+                    <input type="button" id="btnMisReportes" value="MIS REPORTES"/>
+                    <input type="button" id="btnReportes" value="REPORTES"/>
+                     <input type="button" id="btnPorValidar" value="REPORTES POR VALIDAR"/>
+                    <input type="button" id="btnTickets" value="REPORTES POR TICKETS"/>
+                    <input type="button" id="btnExpediente" value="VER EXPEDIENTE"/>
+                </div>
+            </div>
+        
+        <!--<div id="botones">
+            <input type="button" id="btnMisReportes" value="MIS REPORTES"/>
+            <input type="button" id="btnReportes" value="REPORTES"/>
+            <input type="button" id="btnPorValidar" value="REPORTES POR VALIDAR"/>
+            <input type="button" id="btnTickets" value="REPORTES POR TICKETS"/>
+            <input type="button" id="btnExpediente" value="VER EXPEDIENTE"/>
+            <hr>
+        </div>-->
+        
+        <div id="reporte">
+            <input type="text" id="txtReporte" placeholder="ESCRIBE AQUI QUE ESTA PASANDO" />
+            <input type="button" id="btnGuardaReporteM" value="GUARDA REPORTE"/>
+        </div>
+        
+        <div id="contenedorDudas"></div>
+        
+        
+        
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+        <!-- *********  -->
+        
+        
+        <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="../js/general.js"></script>
+        <script type="text/javascript" src="../js/mantenimiento/mantenimiento.js"></script>
+        <script type="text/javascript" src="../js/mantenimiento/mantenimientoController.js"></script>
+    </body>
+</html>

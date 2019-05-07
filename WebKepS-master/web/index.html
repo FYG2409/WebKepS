@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>KEP</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/indexEstilo.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <div id="iniciar">
+            <center>
+                <p>HOLA...!</p>
+                <input type="text" id="correo" placeholder="Correo Electronico"/><br>
+                <input type="password" id="contra" placeholder="Contraseña"/><br>
+                <input type="button" id="btnIniciaSesion" value="Iniciar Sesion"/><br>
+                <input type="button" id="btnCierraSesion" value="Cerrar Sesion"/>
+            </center>
+        </div>
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+        <!-- *********  -->
+        
+        <script type="text/javascript" src="js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="js/general.js"></script>
+        <script type="text/javascript" src="js/roles.js"></script>
+        <script type="text/javascript" src="js/auth/autenticatio.js"></script>
+        <script type="text/javascript" src="js/auth/authControlle.js"></script>
+        
+    </body>
+   
+</html>

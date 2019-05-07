@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GERENTE SOPORTE</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="../css/Soporte.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body id="bodyGerenteS">
+        <div id="BarraN">
+            <center><p style="font: condensed 120% sans-serif; color: #ffffff ; font-size: 30px;">S O P O R T E</p></center>
+            <br>
+            <center>
+            <input type="button" id="btnReportes" value="REPORTES"/> 
+            <input type="button"  id="btnMisReportes" value="MIS REPORTES"/>
+            <input type="button"  id="btnPorValidar" value="REPORTES POR VALIDAR"/>
+            <input type="button"  id="btnTickets" value="VER TICKETS"/>
+            <input type="button"  id="btnExpediente" value="VER EXPEDIENTE"/>
+            </center>
+            <br>
+        </div>
+        <br>
+    <center>
+        <div id="contenedorDudas">
+            <center></center>
+        </div>
+    </center>
+        
+        
+        
+        
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+        <!-- *********  -->
+        
+        
+        <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="../js/general.js"></script>
+        <script type="text/javascript" src="../js/soporte/soporte.js"></script>
+        <script type="text/javascript" src="../js/soporte/soporteController.js"></script>
+        
+    </body>
+</html>

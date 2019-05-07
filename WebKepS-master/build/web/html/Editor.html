@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>EDITOR</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="../css/EditorStyle.css"/>
+    </head>
+    <body id="bodyE">
+            <div id="cabecera">
+                <p id="titulo">Edición</p>
+                <div>
+                    <input type="button" id="btnFaqs" value="FAQS"/>
+                    <input type="button" id="btnExpediente" value="VER EXPEDIENTE"/>
+                    <input type="button" id="btnCierraSesion" value="CERRAR SESION"/>
+                </div>
+            </div>
+        <div id="general">
+            <!--
+            <div id="faqs">
+                Preguntas Frecuentes
+                <input type="button" id="btnAñadir" value="Añadir"/>
+            </div>
+            -->
+
+            <div id="agregar">
+                <input type="text" id="txtnuevaPregunta" placeholder="Pregunta">
+                <hr>
+                <input type="text" id="txtnuevaRespuesta" placeholder="Respuesta">
+                <input type="button" id="btnGuardaFaq" value="GUARDA FAQ"/>
+            </div>
+
+            <div id="contenedorFaqs"></div>
+        </div>
+        
+        
+        
+        
+        <!--  FIREBASE  -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+            <!-- Para autentificar -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+            <!-- Para database -->
+            <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+        <!-- *********  -->
+        
+        
+        <script type="text/javascript" src="../js/config/ConfigFirebase.js"></script>
+        <script type="text/javascript" src="../js/general.js"></script>
+        <script type="text/javascript" src="../js/faq/faqs.js"></script>
+        <script type="text/javascript" src="../js/faq/faqController.js"></script>
+        <script type="text/javascript" src="../js/auth/autenticatio.js"></script>
+        <script type="text/javascript" src="../js/auth/authControlle.js"></script>
+    </body>
+</html>

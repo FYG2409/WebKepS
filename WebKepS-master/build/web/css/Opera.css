@@ -1,0 +1,39 @@
+#btnReportesO , #btnExpediente 
+{
+  color: #b4e8ca !important;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0.5em 1.2em;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #b4e8ca;
+  transition: all 1s ease;
+  position: relative;
+}
+#btnExpediente:hover, #btnReportesO:hover 
+{
+  background: #b4e8ca;
+  color: #fff !important;
+}
+#BarraN
+{
+    background: #b4e8ca;
+}
+
+input[type=button]
+{
+    text-decoration: none;
+    padding: 10px;
+    color: #ffffff;
+    background-color: #b4e8ca;
+    border: 2px solid #b4e8ca;
+}
+
+input[type=text]
+{
+    text-decoration: none;
+    padding: 10px;
+    font-size: 15px;
+    background-color: #f3e9ff;
+    border: 2px solid #cab4e8;
+}
